@@ -2,10 +2,53 @@ export interface Recipe {
   id: string | null | undefined;
   title: string;
   description: string;
+  brewInABagSettings: BrewInABagSettings;
   ingredients: Ingredient[];
   instructions: string;
   author: string;
   comments: Comment[];
+}
+
+export enum GrainBillUnit {
+  Pounds = "Pounds",
+  Kilograms = "Kilograms",
+}
+
+export enum TempUnit {
+  Fahrenheit = "Fahrenheit",
+  Celsius = "Celsius",
+}
+
+export enum TimeUnit {
+  Hours = "Hours",
+  Minutes = "Minutes",
+}
+
+export enum LiquidUnit {
+  Gallons = "Gallons",
+  Liters = "Liters",
+}
+
+export interface BrewInABagSettings {
+  id: string | null | undefined;
+  grainBillUnit: GrainBillUnit;
+  tempUnit: TempUnit;
+  timeUnit: TimeUnit;
+  liquidUnit: LiquidUnit;
+  grainBill: number;
+  batchSize: number;
+  mashTemp: number;
+  boilTime: number;
+  kettleSize: number;
+  trub: number;
+  boilOffRate: number;
+  grainAbsorption: number;
+  totalWaterNeeded: number;
+  strikeWaterTemp: number;
+  totalMashVolume: number;
+  preBoilWort: number;
+  postBoilWort: number;
+  intoFermenter: number;
 }
 
 export enum IngredientType {
