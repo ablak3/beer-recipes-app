@@ -3,6 +3,7 @@ export interface Recipe {
   title: string;
   description: string;
   brewInABagSettings: BrewInABagSettings;
+  brewInABagResults: BrewInABagResults;
   ingredients: Ingredient[];
   instructions: string;
   author: string;
@@ -42,7 +43,10 @@ export interface BrewInABagSettings {
   kettleSize: number;
   trub: number;
   boilOffRate: number;
-  grainAbsorption: number;
+  grainAbsorptionRate: number;
+}
+
+export interface BrewInABagResults {
   totalWaterNeeded: number;
   strikeWaterTemp: number;
   totalMashVolume: number;

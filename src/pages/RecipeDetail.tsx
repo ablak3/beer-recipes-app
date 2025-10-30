@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Container, Typography } from '@mui/material';
-import { getRecipeById } from '../api/recipes';
-import { Recipe } from '../types';
-import CommentBox from '../components/CommentBox';
-import LoadingSpinner from '../components/LoadingSpinner';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Container, Typography } from "@mui/material";
+import { getRecipeById } from "../api/recipes";
+import { Recipe } from "../types";
+import CommentBox from "../components/CommentBox";
+import LoadingSpinner from "../components/LoadingSpinner";
 // import IngredientBox from '../components/IngredientBox';
 
 const RecipeDetail = () => {
@@ -22,8 +22,8 @@ const RecipeDetail = () => {
         const response = await getRecipeById(id);
         setRecipe(response.data);
       } catch (err) {
-        console.error('Failed to fetch recipe:', err);
-        setError('Failed to fetch recipe.');
+        console.error("Failed to fetch recipe:", err);
+        setError("Failed to fetch recipe.");
       } finally {
         setLoading(false);
       }
@@ -39,13 +39,14 @@ const RecipeDetail = () => {
     <Container>
       <Typography variant="h4">{recipe.title}</Typography>
       <Typography>{recipe.description}</Typography>
-      {recipe.ingredients && recipe.ingredients.map(ingredient => (
+      {recipe.ingredients &&
+        recipe.ingredients.map((ingredient) => (
           <Typography>{ingredient.name}</Typography>
         ))}
       {/* <IngredientBox recipe={recipe}/> */}
       <Typography variant="h6">Instructions</Typography>
       <Typography>{recipe.instructions}</Typography>
-      <CommentBox recipe={recipe}/>
+      <CommentBox recipe={recipe} />
     </Container>
   );
 };

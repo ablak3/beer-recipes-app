@@ -1,6 +1,12 @@
-import { Card, CardContent, CardActions, Typography, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { Recipe } from '../types';
+import {
+  Card,
+  CardContent,
+  CardActions,
+  Typography,
+  Button,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Recipe } from "../types";
 
 interface Props {
   recipe: Recipe;

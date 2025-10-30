@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { Container, Typography } from '@mui/material';
-import Grid from '@mui/material/Grid';
-import { useAuth } from '../hooks/useAuth';
-import { getUserRecipes } from '../api/recipes';
-import { Recipe } from '../types';
-import RecipeCard from '../components/RecipeCard';
-import LoadingSpinner from '../components/LoadingSpinner';
+import { useEffect, useState } from "react";
+import { Container, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import { useAuth } from "../hooks/useAuth";
+import { getUserRecipes } from "../api/recipes";
+import { Recipe } from "../types";
+import RecipeCard from "../components/RecipeCard";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const MyRecipes = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -22,8 +22,8 @@ const MyRecipes = () => {
         const response = await getUserRecipes(user);
         setRecipes(response.data);
       } catch (err) {
-        console.error('Failed to fetch user recipes:', err);
-        setError('Failed to fetch user recipes.');
+        console.error("Failed to fetch user recipes:", err);
+        setError("Failed to fetch user recipes.");
       } finally {
         setLoading(false);
       }
@@ -37,10 +37,12 @@ const MyRecipes = () => {
 
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>My Recipes</Typography>
+      <Typography variant="h4" gutterBottom>
+        My Recipes
+      </Typography>
       <Grid container spacing={2}>
-        {recipes.map(recipe => (
-          <Grid key={recipe.id} size={{xs:12, sm:6, md:4}}>
+        {recipes.map((recipe) => (
+          <Grid key={recipe.id} size={{ xs: 12, sm: 6, md: 4 }}>
             <RecipeCard recipe={recipe} />
           </Grid>
         ))}

@@ -7,6 +7,7 @@ export const useRecipes = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('useRecipes Rendered');
     getAllRecipes().then(res => {
       setRecipes(res.data);
       setLoading(false);

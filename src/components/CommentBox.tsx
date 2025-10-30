@@ -1,9 +1,9 @@
-import { Box, Typography, TextField, Button } from '@mui/material';
-import { useState } from 'react';
-import { addComment } from '../api/recipes';
-import { useNavigate } from 'react-router-dom';
-import { Recipe } from '../types';
-import { useAuth } from '../hooks/useAuth';
+import { Box, Typography, TextField, Button } from "@mui/material";
+import { useState } from "react";
+import { addComment } from "../api/recipes";
+import { useNavigate } from "react-router-dom";
+import { Recipe } from "../types";
+import { useAuth } from "../hooks/useAuth";
 
 interface CommentBoxProps {
   recipe: Recipe;
@@ -11,13 +11,13 @@ interface CommentBoxProps {
 
 export const CommentBox: React.FC<CommentBoxProps> = ({ recipe }) => {
   const { user } = useAuth();
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = () => {
     if (!recipe.id || !user) return;
     addComment(recipe.id, { id: null, user, content: comment })
-      .then(() => setComment(''))
+      .then(() => setComment(""))
       .then(() => navigate(`/recipes/${recipe.id}`));
   };
 
@@ -34,9 +34,11 @@ export const CommentBox: React.FC<CommentBoxProps> = ({ recipe }) => {
         fullWidth
         label="Add a comment"
         value={comment}
-        onChange={e => setComment(e.target.value)}
+        onChange={(e) => setComment(e.target.value)}
       />
-      <Button onClick={handleSubmit} variant="contained" sx={{ mt: 2 }}>Submit</Button>
+      <Button onClick={handleSubmit} variant="contained" sx={{ mt: 2 }}>
+        Submit
+      </Button>
     </Box>
   );
 };

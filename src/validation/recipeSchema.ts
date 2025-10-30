@@ -4,7 +4,7 @@ import { GrainBillUnit, IngredientType, LiquidUnit, TempUnit, TimeUnit } from '.
 /**
  * Brew In A Bag Schema
  */
-export const BrewInABagSettings = yup.object({
+export const brewInABagSettings = yup.object({
   id: yup.string().required().nullable(),
   grainBillUnit: yup.mixed<GrainBillUnit>()
     .oneOf(Object.values(GrainBillUnit))
@@ -25,8 +25,14 @@ export const BrewInABagSettings = yup.object({
   kettleSize: yup.number().required("Kettle size is required"),
   trub: yup.number().required("Trub is required"),
   boilOffRate: yup.number().required("Boil off rate is required"),
-  grainAbsorption: yup.number().required("Grain absorption is required"),
-  totalWaterNeed: yup.number().required("Total water needed is required"),
+  grainAbsorptionRate: yup.number().required("Grain absorption is required"),
+})
+
+/**
+ * Brew In A Bag Schema
+ */
+export const brewInABagResults = yup.object({
+  totalWaterNeeded: yup.number().required("Total water needed is required"),
   strikeWaterTemp: yup.number().required("Strike water temp is required"),
   totalMashVolume: yup.number().required("Total Mash Volume is required"),
   preBoilWort: yup.number().required("Pre boil wort is required"),
@@ -65,7 +71,8 @@ export const recipeSchema = yup.object({
   id: yup.string().required().nullable(),
   title: yup.string().required("Title is required"),
   description: yup.string().required("Description is required"),
-  BrewInABagSettings: BrewInABagSettings.required("Brew in a bag settings are required"),
+  brewInABagSettings: brewInABagSettings.required("Brew in a bag settings are required"),
+  brewInABagResults: brewInABagResults.required("Brew in a bag results are required"),
   ingredients: yup.array().of(ingredientSchema)
     .default([])
     .min(1, "At least one ingredient is required")

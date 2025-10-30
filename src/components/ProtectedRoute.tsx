@@ -1,20 +1,18 @@
-import { ReactNode, useContext } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { useContext } from "react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
-interface Props {
-  children: ReactNode;
-}
-
-const ProtectedRoute: React.FC<Props> = ({ children }) => {
+const ProtectedRoute = () => {
   const { user } = useContext(AuthContext);
   const location = useLocation();
 
-  if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
-
-  return <>{children}</>;
+  // Redirect to login, remembering where the user was trying to go
+  // ✅ When authenticated, render nested routes via Outlet
+  return user ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/login" state={{ from: location }} replace />
+  );
 };
 
 export default ProtectedRoute;
