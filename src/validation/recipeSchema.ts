@@ -1,5 +1,11 @@
 import * as yup from 'yup';
-import { GrainBillUnit, IngredientType, LiquidUnit, TempUnit, TimeUnit } from '../types';
+import { 
+  GrainBillUnit, 
+  IngredientType, 
+  LiquidUnit, 
+  TempUnit, 
+  TimeUnit, 
+  StepAdded } from '../types';
 
 /**
  * Brew In A Bag Schema
@@ -53,6 +59,8 @@ export const ingredientSchema = yup.object({
     .number()
     .required("Ingredient amount is required"),
   units: yup.string().required("Ingredient units are required"),
+  stepAdded: yup.mixed<StepAdded>().required("Step added is required"),
+  timeAdded: yup.string().required(),
 });
 
 /**

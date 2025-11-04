@@ -1,13 +1,17 @@
-import { GrainBillUnit, LiquidUnit, Recipe, TempUnit, TimeUnit } from "../types";
+import { BrewInABagResults, BrewInABagSettings, GrainBillUnit, Ingredient, LiquidUnit, Recipe, StepAdded, TempUnit, TimeUnit } from "../types";
 import { IngredientType } from "../types";
 
-export const defaultRecipeValues: Recipe = {
-  id: null,
-  title: "",
-  description: "",
-  instructions: "",
-  author: "",
-  brewInABagSettings: {
+export const defaultIngredient: Ingredient = {
+      id: null,
+      type: IngredientType.Other,
+      name: "",
+      amount: 0,
+      units: "",
+      stepAdded: StepAdded.PreBoil,
+      timeAdded: "NA"
+};
+
+export const defaultBrewInABagSettings: BrewInABagSettings = {
     id: null,
     grainBillUnit: GrainBillUnit.Pounds,
     tempUnit: TempUnit.Fahrenheit,
@@ -20,24 +24,26 @@ export const defaultRecipeValues: Recipe = {
     kettleSize: 15,
     trub: 0.25,
     boilOffRate: 10,
-    grainAbsorptionRate: 0.45,
-  },
-  brewInABagResults: {
+    grainAbsorptionRate: 0.45
+};
+
+export const defaultBrewInABagResults: BrewInABagResults = {
     totalWaterNeeded: 0,
     strikeWaterTemp: 0,
     totalMashVolume: 0,
     preBoilWort: 0,
     postBoilWort: 0,
-    intoFermenter: 0,
-  },
-  ingredients: [
-    {
-      id: null,
-      type: IngredientType.Other,
-      name: "",
-      amount: 0,
-      units: "",
-    },
-  ],
+    intoFermenter: 0
+};
+
+export const defaultRecipeValues: Recipe = {
+  id: null,
+  title: "",
+  description: "",
+  instructions: "",
+  author: "",
+  brewInABagSettings: defaultBrewInABagSettings,
+  brewInABagResults: defaultBrewInABagResults,
+  ingredients: [defaultIngredient],
   comments: [{ id: null, user: "", content: "" }],
 };

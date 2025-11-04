@@ -15,7 +15,8 @@ import {
 import { AddCircle, RemoveCircle } from "@mui/icons-material";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { RecipeFormValues } from "../../validation/recipeSchema";
-import { IngredientType } from "../../types";
+import { IngredientType, StepAdded } from "../../types";
+import { defaultIngredient } from "../../constants/defaultRecipeValues";
 
 export default function RecipeStepIngredients() {
   const {
@@ -112,6 +113,42 @@ export default function RecipeStepIngredients() {
             />
           </Grid>
 
+          {/* --- Step Added --- */}
+          <Grid size={{xs:12, sm:2}}>
+            <FormControl fullWidth error={!!errors.ingredients?.[index]?.stepAdded}>
+              <InputLabel>Step Added</InputLabel>
+              <Select
+                label="StepAdded"
+                {...register(`ingredients.${index}.stepAdded` as const)}
+                defaultValue={field.stepAdded || ""}
+              >
+                <MenuItem value="" disabled>
+                  Select type
+                </MenuItem>
+                {Object.values(StepAdded).map((stepAdded) => (
+                  <MenuItem key={stepAdded} value={stepAdded}>
+                    {stepAdded}
+                  </MenuItem>
+                ))}
+              </Select>
+              <FormHelperText>
+                {errors.ingredients?.[index]?.stepAdded?.message}
+              </FormHelperText>
+            </FormControl>
+          </Grid>
+
+          {/* --- Time Added --- */}
+          <Grid size={{xs:12, sm:3}}>
+            <TextField
+              label="Time Added"
+              fullWidth
+              {...register(`ingredients.${index}.timeAdded` as const)}
+              defaultValue={field.timeAdded}
+              error={!!errors.ingredients?.[index]?.timeAdded}
+              helperText={errors.ingredients?.[index]?.timeAdded?.message}
+            />
+          </Grid>
+
           {/* --- Add / Remove Buttons --- */}
           <Grid size={{xs:12, sm:2}}>
             <IconButton
@@ -126,13 +163,7 @@ export default function RecipeStepIngredients() {
               <IconButton
                 color="primary"
                 onClick={() =>
-                  addIngredient({
-                    id: null,
-                    type: IngredientType.Other,
-                    name: "",
-                    amount: 0,
-                    units: "",
-                  })
+                  addIngredient(defaultIngredient)
                 }
               >
                 <AddCircle />
@@ -148,13 +179,7 @@ export default function RecipeStepIngredients() {
         variant="outlined"
         color="primary"
         onClick={() =>
-          addIngredient({
-            id: null,
-            type: IngredientType.Other,
-            name: "",
-            amount: 0,
-            units: "",
-          })
+          addIngredient(defaultIngredient)
         }
       >
         Add Ingredient

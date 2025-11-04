@@ -37,7 +37,6 @@ export default function CreateRecipeLayout() {
   const handleLoad = useCallback((saved: typeof formData) => {
     setFormData(saved);
   }, []);
-
   useLocalStorage("recipeForm", formData, handleLoad);
 
   const progress = ((currentStepIndex + 1) / steps.length) * 100;

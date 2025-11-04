@@ -1,5 +1,5 @@
 export interface Recipe {
-  id: string | null | undefined;
+  id: string | null;
   title: string;
   description: string;
   brewInABagSettings: BrewInABagSettings;
@@ -31,7 +31,7 @@ export enum LiquidUnit {
 }
 
 export interface BrewInABagSettings {
-  id: string | null | undefined;
+  id: string | null;
   grainBillUnit: GrainBillUnit;
   tempUnit: TempUnit;
   timeUnit: TimeUnit;
@@ -64,16 +64,25 @@ export enum IngredientType {
   Other = "Other",
 }
 
+export enum StepAdded {
+  PreBoil = "PreBoil",
+  FirstWort = "FirstWort",
+  Boil = "Boil",
+  Fermentation = "Fermentation",
+}
+
 export interface Ingredient {
-  id: string | null | undefined;
+  id: string | null;
   type: IngredientType;
   name: string;
   amount: number;
   units: string;
+  stepAdded: StepAdded;
+  timeAdded: string;
 }
 
 export interface Comment {
-  id: string | null | undefined;
+  id: string | null;
   user: string;
   content: string;
 }
