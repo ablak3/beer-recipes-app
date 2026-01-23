@@ -1,9 +1,30 @@
 import { useEffect, useState, useDeferredValue, useMemo } from "react";
-import { LiquidUnit, TempUnit } from "../types";
 
-interface UseBiabCalculatorProps {
-  tempUnit?: TempUnit;
-  liquidUnit?: LiquidUnit;
+export enum LiquidUnit {
+  Gallons = "Gallons",
+  Liters = "Liters",
+}
+
+export enum TempUnit {
+  Fahrenheit = "Fahrenheit",
+  Celsius = "Celsius",
+}
+
+export enum GrainBillUnit {
+  Pounds = "Pounds",
+  Kilograms = "Kilograms",
+}
+
+export enum TimeUnit {
+  Minutes = "Minutes",
+  Hours = "Hours",
+}
+
+type UseBiabCalculatorProps = {
+  tempUnit: TempUnit;
+  liquidUnit: LiquidUnit;
+  grainBillUnit: GrainBillUnit;
+  timeUnit: TimeUnit;
   grainBill: number;
   batchSize: number;
   mashTemp: number;
@@ -11,16 +32,24 @@ interface UseBiabCalculatorProps {
   trub: number;
   boilOffRate: number;
   grainAbsorptionRate: number;
-  grainTemp?: number;
+  grainTemp: number;
+  kettleSize?: number;
+  // Allow extra properties to be passed but ignored
+  [key: string]: any;
 }
 
 /**
  * ✅ Custom hook for Brew-in-a-Bag calculations
  * Uses deferred inputs and memoized results to prevent re-renders
+ * 
+ * Working internally with user's units (no conversions to working units)
+ * All calculations done in the user's selected units
  */
 export function useBiabCalculator({
-  tempUnit = TempUnit.Fahrenheit,
-  liquidUnit = LiquidUnit.Gallons,
+  tempUnit,
+  liquidUnit,
+  grainBillUnit,
+  timeUnit,
   grainBill,
   batchSize,
   mashTemp,
@@ -28,7 +57,8 @@ export function useBiabCalculator({
   trub,
   boilOffRate,
   grainAbsorptionRate,
-  grainTemp = 70,
+  grainTemp,
+  kettleSize,
 }: UseBiabCalculatorProps) {
   // Defer values to reduce calculation frequency
   const deferredInputs = useDeferredValue({
@@ -40,6 +70,7 @@ export function useBiabCalculator({
     boilOffRate,
     grainAbsorptionRate,
     grainTemp,
+    kettleSize,
   });
 
   const [results, setResults] = useState({
@@ -49,55 +80,99 @@ export function useBiabCalculator({
     preBoilWort: 0,
     postBoilWort: 0,
     intoFermenter: 0,
+    kettleSizeExceeded: false,
+    kettleSizeWarning: null as string | null,
   });
-
-  // --- Unit conversion helpers ---
-  const toLiters = (value: number) =>
-    liquidUnit === LiquidUnit.Gallons ? value * 3.78541 : value;
-  const fromLiters = (value: number) =>
-    liquidUnit === LiquidUnit.Gallons ? value / 3.78541 : value;
-  const toCelsius = (f: number) =>
-    tempUnit === TempUnit.Fahrenheit ? (f - 32) * (5 / 9) : f;
-  const fromCelsius = (c: number) =>
-    tempUnit === TempUnit.Fahrenheit ? c * (9 / 5) + 32 : c;
 
   // --- Perform calculations only when deferred inputs change ---
   useEffect(() => {
     const {
-      grainBill: gb,
-      batchSize: bsRaw,
-      mashTemp: mtRaw,
-      boilTime: bt,
-      trub: tRaw,
-      boilOffRate: bor,
-      grainAbsorptionRate: gar,
-      grainTemp: gtRaw,
+      grainBill: l,
+      batchSize: b,
+      mashTemp: j,
+      boilTime: xRaw,
+      trub: t,
+      boilOffRate: r,
+      grainAbsorptionRate: g,
+      grainTemp: i,
+      kettleSize: k,
     } = deferredInputs;
 
-    const bs = toLiters(bsRaw);
-    const t = toLiters(tRaw);
-    const mt = toCelsius(mtRaw);
-    const gt = toCelsius(gtRaw);
+    // Convert boil time to hours if needed
+    const x = timeUnit === TimeUnit.Hours ? xRaw : xRaw / 60;
+    
+    // Calculate boil off volume
+    const boilOffVolume = r * x;
+    
+    // Calculate grain absorption
+    const grainAbsorption = l * g;
 
-    const boilOff = (bor / 100) * (bt / 60) * bs;
-    const grainAbsorption = gb * (gar / 10);
-    const totalWaterNeeded = bs + boilOff + t + grainAbsorption;
-    const strikeWaterTemp = mt + (0.2 / (totalWaterNeeded / gb)) * (mt - gt);
-    const grainDisplacement = gb * 0.08;
-    const totalMashVolume = totalWaterNeeded + grainDisplacement;
-    const preBoilWort = totalWaterNeeded - grainAbsorption;
-    const postBoilWort = preBoilWort - boilOff;
-    const intoFermenter = postBoilWort - t;
+    // Calculate Total Water Needed
+    // w = batch size + trub + boil off + grain absorption
+    const w = b + t + boilOffVolume + grainAbsorption;
+
+    // Calculate grain volume
+    // 0.08 gal/lb for US, 0.65 L/kg for metric
+    // This is the PHYSICAL volume the grain occupies, not absorption
+    let grainVolume;
+    if (liquidUnit === LiquidUnit.Gallons && grainBillUnit === GrainBillUnit.Pounds) {
+      grainVolume = l * 0.08; // gal
+    } else if (liquidUnit === LiquidUnit.Liters && grainBillUnit === GrainBillUnit.Kilograms) {
+      grainVolume = l * 0.65; // L
+    } else if (liquidUnit === LiquidUnit.Gallons && grainBillUnit === GrainBillUnit.Kilograms) {
+      // Convert kg to lbs, then multiply by 0.08 gal/lb
+      grainVolume = (l * 2.20462) * 0.08;
+    } else {
+      // Liters and Pounds: convert lbs to kg, then multiply by 0.65 L/kg
+      grainVolume = (l / 2.20462) * 0.65;
+    }
+
+    // Calculate Total Mash Volume
+    const v = w + grainVolume;
+
+    // Check if kettle size is exceeded
+    const kettleSizeExceeded = k !== undefined && v > k;
+    const kettleSizeWarning = kettleSizeExceeded
+      ? `Warning: Total mash volume (${v.toFixed(2)} ${liquidUnit}) exceeds kettle size (${k!.toFixed(2)} ${liquidUnit})`
+      : null;
+
+    // Calculate PreBoil Wort (water minus grain absorption)
+    const p = w - grainAbsorption;
+
+    // Calculate Strike Water Temperature
+    // The correct formula from biabcalculator.com:
+    // Tw = (0.2 / R) * (Tmash - Tgrain) + Tmash
+    // where R = water to grain ratio in QUARTS per pound
+    // So we need to convert gallons to quarts: multiply by 4
+    // For metric: Tw = (0.41 / R) * (Tmash - Tgrain) + Tmash where R is L/kg
+    const waterToGrainRatio = w / l;
+    let s;
+    if (liquidUnit === LiquidUnit.Gallons && grainBillUnit === GrainBillUnit.Pounds) {
+      // US: convert gal/lb to qt/lb by multiplying by 4
+      const ratioInQuarts = waterToGrainRatio * 4;
+      s = (0.2 / ratioInQuarts) * (j - i) + j;
+    } else {
+      // Metric: L/kg ratio used directly
+      s = (0.41 / waterToGrainRatio) * (j - i) + j;
+    }
+
+    // Calculate PostBoil Wort
+    const q = b + t;
+
+    // Into Fermenter
+    const f = b;
 
     setResults({
-      totalWaterNeeded: fromLiters(totalWaterNeeded),
-      strikeWaterTemp: fromCelsius(strikeWaterTemp),
-      totalMashVolume: fromLiters(totalMashVolume),
-      preBoilWort: fromLiters(preBoilWort),
-      postBoilWort: fromLiters(postBoilWort),
-      intoFermenter: fromLiters(intoFermenter),
+      totalWaterNeeded: w,
+      strikeWaterTemp: s,
+      totalMashVolume: v,
+      preBoilWort: p,
+      postBoilWort: q,
+      intoFermenter: f,
+      kettleSizeExceeded,
+      kettleSizeWarning,
     });
-  }, [deferredInputs, liquidUnit, tempUnit]);
+  }, [deferredInputs, liquidUnit, tempUnit, grainBillUnit, timeUnit]);
 
   // ✅ Memoize results so reference stays stable
   return useMemo(() => results, [results]);

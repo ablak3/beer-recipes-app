@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Typography } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { useBiabCalculator } from "../hooks/useBiabCalculator";
@@ -20,7 +20,6 @@ export default function BiabResults({ biabValues }: BiabResultsProps) {
   useEffect(() => {
     if (!results) return;
 
-    const prev = prevResultsRef.current;
     let hasChanged = false;
 
     // Only update changed fields

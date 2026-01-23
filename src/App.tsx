@@ -15,8 +15,8 @@ import NotFound from "./pages/NotFound";
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
+    <Router>
+      <AuthProvider>
         <Navbar />
         <Routes>
           {/* --- Public routes --- */}
@@ -45,8 +45,8 @@ function App() {
           {/* --- Catch-all route --- */}
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 

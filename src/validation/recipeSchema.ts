@@ -25,6 +25,7 @@ export const brewInABagSettings = yup.object({
     .oneOf(Object.values(LiquidUnit))
     .required("Liquid unit is required"),
   grainBill: yup.number().required("Grain bill is required"),
+  grainTemp: yup.number().required("Grain Temperature is required"),
   batchSize: yup.number().required("Batch size is required"),
   mashTemp: yup.number().required("Mash temp is required"),
   boilTime: yup.number().required("Boil time is required"),

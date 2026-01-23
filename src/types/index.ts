@@ -37,6 +37,7 @@ export interface BrewInABagSettings {
   timeUnit: TimeUnit;
   liquidUnit: LiquidUnit;
   grainBill: number;
+  grainTemp: number;
   batchSize: number;
   mashTemp: number;
   boilTime: number;

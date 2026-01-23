@@ -7,9 +7,11 @@ const numericFields: {
   label: string;
 }[] =  [
   { name: "grainBill", label: "Grain Bill" },
+  { name: "grainTemp", label: "Grain Temperature" },
   { name: "batchSize", label: "Batch Size" },
   { name: "mashTemp", label: "Mash Temp" },
   { name: "boilTime", label: "Boil Time" },
+  { name: "kettleSize", label: "Kettle Size" },
   { name: "trub", label: "Trub" },
   { name: "boilOffRate", label: "Boil Off Rate" },
   { name: "grainAbsorptionRate", label: "Grain Absorption Rate" },

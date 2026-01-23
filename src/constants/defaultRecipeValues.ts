@@ -23,8 +23,9 @@ export const defaultBrewInABagSettings: BrewInABagSettings = {
     boilTime: 60,
     kettleSize: 15,
     trub: 0.25,
-    boilOffRate: 10,
-    grainAbsorptionRate: 0.45
+    boilOffRate: 1.25,
+    grainAbsorptionRate: 0.045,
+    grainTemp: 70
 };
 
 export const defaultBrewInABagResults: BrewInABagResults = {

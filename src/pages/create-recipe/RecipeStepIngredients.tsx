@@ -75,7 +75,7 @@ export default function RecipeStepIngredients() {
           </Grid>
 
           {/* --- Ingredient Name --- */}
-          <Grid size={{xs:12, sm:3}}>
+          <Grid size={{xs:12, sm:2}}>
             <TextField
               label="Name"
               fullWidth
@@ -102,7 +102,7 @@ export default function RecipeStepIngredients() {
           </Grid>
 
           {/* --- Units --- */}
-          <Grid size={{xs:12, sm:3}}>
+          <Grid size={{xs:12, sm:2}}>
             <TextField
               label="Units"
               fullWidth
@@ -138,7 +138,7 @@ export default function RecipeStepIngredients() {
           </Grid>
 
           {/* --- Time Added --- */}
-          <Grid size={{xs:12, sm:3}}>
+          <Grid size={{xs:12, sm:2}}>
             <TextField
               label="Time Added"
               fullWidth
