@@ -4,38 +4,67 @@ export interface Recipe {
   description: string;
   brewInABagSettings: BrewInABagSettings;
   brewInABagResults: BrewInABagResults;
+  beforeWaterProfile: BeforeWaterProfile;
+  afterWaterProfile: AfterWaterProfile;
+  waterAdditions: WaterAdditions;
   ingredients: Ingredient[];
   instructions: string;
   author: string;
   comments: Comment[];
 }
 
-export enum GrainBillUnit {
+export enum Unit {
   Pounds = "Pounds",
   Kilograms = "Kilograms",
-}
-
-export enum TempUnit {
   Fahrenheit = "Fahrenheit",
   Celsius = "Celsius",
-}
-
-export enum TimeUnit {
   Hours = "Hours",
   Minutes = "Minutes",
-}
-
-export enum LiquidUnit {
   Gallons = "Gallons",
   Liters = "Liters",
+  Milliliters = "Milliliters",
+  PartsPerMillion = "PartsPerMillion",
+}
+
+export interface BeforeWaterProfile {
+  id: string | null;
+  solidUnit:Unit;
+  calcium: number;
+  magnesium: number;
+  sodium: number;
+  chloride: number;
+  sulfate: number;
+  alkalinity: number;
+}
+
+export interface AfterWaterProfile {
+  id: string | null;
+  solidUnit: Unit;
+  calcium: number;
+  magnesium: number;
+  sodium: number;
+  chloride: number;
+}
+
+export interface WaterAdditions {
+  id: string | null;
+  solidUnit: Unit;
+  liquidUnit: Unit;
+  gypsum: number;
+  calciumChloride: number;
+  epsomSalt: number;
+  slakedLime: number;
+  BakingSoda: number;
+  chalk: number;
+  lacticAcid: number;
 }
 
 export interface BrewInABagSettings {
   id: string | null;
-  grainBillUnit: GrainBillUnit;
-  tempUnit: TempUnit;
-  timeUnit: TimeUnit;
-  liquidUnit: LiquidUnit;
+  grainBillUnit: Unit;
+  tempUnit: Unit;
+  timeUnit: Unit;
+  liquidUnit: Unit;
   grainBill: number;
   grainTemp: number;
   batchSize: number;

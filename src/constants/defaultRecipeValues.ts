@@ -1,5 +1,14 @@
-import { BrewInABagResults, BrewInABagSettings, GrainBillUnit, Ingredient, LiquidUnit, Recipe, StepAdded, TempUnit, TimeUnit } from "../types";
-import { IngredientType } from "../types";
+import { BrewInABagResults,
+  BrewInABagSettings,
+  Unit,
+  Ingredient,
+  Recipe,
+  StepAdded,
+  BeforeWaterProfile,
+  AfterWaterProfile,
+  WaterAdditions,
+  IngredientType
+} from "../types";
 
 export const defaultIngredient: Ingredient = {
       id: null,
@@ -13,10 +22,10 @@ export const defaultIngredient: Ingredient = {
 
 export const defaultBrewInABagSettings: BrewInABagSettings = {
     id: null,
-    grainBillUnit: GrainBillUnit.Pounds,
-    tempUnit: TempUnit.Fahrenheit,
-    timeUnit: TimeUnit.Minutes,
-    liquidUnit: LiquidUnit.Gallons,
+    grainBillUnit: Unit.Pounds,
+    tempUnit: Unit.Fahrenheit,
+    timeUnit: Unit.Minutes,
+    liquidUnit: Unit.Gallons,
     grainBill: 10,
     batchSize: 5.5,
     mashTemp: 153,
@@ -37,6 +46,39 @@ export const defaultBrewInABagResults: BrewInABagResults = {
     intoFermenter: 0
 };
 
+export const defaultBeforeWaterProfile: BeforeWaterProfile = {
+  id: null,
+  solidUnit: Unit.PartsPerMillion,
+  calcium: 0,
+  magnesium: 0,
+  sodium: 0,
+  chloride: 0,
+  sulfate: 0,
+  alkalinity: 0
+}
+
+export const defaultAfterWaterProfile: AfterWaterProfile = {
+  id: null,
+  solidUnit: Unit.PartsPerMillion,
+  calcium: 0,
+  magnesium: 0,
+  sodium: 0,
+  chloride: 0
+}
+
+export const defaultWaterAdditions: WaterAdditions = {
+  id: null,
+  solidUnit: Unit.PartsPerMillion,
+  liquidUnit: Unit.Milliliters,
+  gypsum: 0,
+  calciumChloride: 0,
+  epsomSalt: 0,
+  slakedLime: 0,
+  BakingSoda: 0,
+  chalk: 0,
+  lacticAcid: 0
+}
+
 export const defaultRecipeValues: Recipe = {
   id: null,
   title: "",
@@ -45,6 +87,9 @@ export const defaultRecipeValues: Recipe = {
   author: "",
   brewInABagSettings: defaultBrewInABagSettings,
   brewInABagResults: defaultBrewInABagResults,
+  beforeWaterProfile: defaultBeforeWaterProfile,
+  afterWaterProfile: defaultAfterWaterProfile,
+  waterAdditions: defaultWaterAdditions,
   ingredients: [defaultIngredient],
   comments: [{ id: null, user: "", content: "" }],
 };

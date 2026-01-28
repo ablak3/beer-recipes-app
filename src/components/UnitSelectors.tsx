@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { Grid, TextField, MenuItem } from "@mui/material";
-import { GrainBillUnit, LiquidUnit, TempUnit, TimeUnit } from "../types";
+import { Unit } from "../types";
 import { RecipeFormValues } from "../validation/recipeSchema";
 
 export default function UnitSelectors() {
@@ -12,10 +12,10 @@ export default function UnitSelectors() {
   label: string;
   options: string[]
 }[] = [
-    { field: "grainBillUnit", label: "Grain Bill Unit", options: Object.values(GrainBillUnit)},
-    { field: "tempUnit", label: "Temp Unit", options: Object.values(TempUnit) },
-    { field: "timeUnit", label: "Time Unit", options: Object.values(TimeUnit) },
-    { field: "liquidUnit", label: "Liquid Unit", options: Object.values(LiquidUnit)},
+    { field: "grainBillUnit", label: "Grain Bill Unit", options: Object.values(Unit)},
+    { field: "tempUnit", label: "Temp Unit", options: Object.values(Unit) },
+    { field: "timeUnit", label: "Time Unit", options: Object.values(Unit) },
+    { field: "liquidUnit", label: "Liquid Unit", options: Object.values(Unit)},
   ];
 
   return (

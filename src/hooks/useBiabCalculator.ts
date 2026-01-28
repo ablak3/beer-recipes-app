@@ -1,30 +1,11 @@
 import { useEffect, useState, useDeferredValue, useMemo } from "react";
-
-export enum LiquidUnit {
-  Gallons = "Gallons",
-  Liters = "Liters",
-}
-
-export enum TempUnit {
-  Fahrenheit = "Fahrenheit",
-  Celsius = "Celsius",
-}
-
-export enum GrainBillUnit {
-  Pounds = "Pounds",
-  Kilograms = "Kilograms",
-}
-
-export enum TimeUnit {
-  Minutes = "Minutes",
-  Hours = "Hours",
-}
+import { Unit } from "../types/index";
 
 type UseBiabCalculatorProps = {
-  tempUnit: TempUnit;
-  liquidUnit: LiquidUnit;
-  grainBillUnit: GrainBillUnit;
-  timeUnit: TimeUnit;
+  tempUnit: Unit;
+  liquidUnit: Unit;
+  grainBillUnit: Unit;
+  timeUnit: Unit;
   grainBill: number;
   batchSize: number;
   mashTemp: number;
@@ -99,8 +80,8 @@ export function useBiabCalculator({
     } = deferredInputs;
 
     // Convert boil time to hours if needed
-    const x = timeUnit === TimeUnit.Hours ? xRaw : xRaw / 60;
-    
+    const x = timeUnit === Unit.Hours ? xRaw : xRaw / 60;
+
     // Calculate boil off volume
     const boilOffVolume = r * x;
     
@@ -115,11 +96,11 @@ export function useBiabCalculator({
     // 0.08 gal/lb for US, 0.65 L/kg for metric
     // This is the PHYSICAL volume the grain occupies, not absorption
     let grainVolume;
-    if (liquidUnit === LiquidUnit.Gallons && grainBillUnit === GrainBillUnit.Pounds) {
+    if (liquidUnit === Unit.Gallons && grainBillUnit === Unit.Pounds) {
       grainVolume = l * 0.08; // gal
-    } else if (liquidUnit === LiquidUnit.Liters && grainBillUnit === GrainBillUnit.Kilograms) {
+    } else if (liquidUnit === Unit.Liters && grainBillUnit === Unit.Kilograms) {
       grainVolume = l * 0.65; // L
-    } else if (liquidUnit === LiquidUnit.Gallons && grainBillUnit === GrainBillUnit.Kilograms) {
+    } else if (liquidUnit === Unit.Gallons && grainBillUnit === Unit.Kilograms) {
       // Convert kg to lbs, then multiply by 0.08 gal/lb
       grainVolume = (l * 2.20462) * 0.08;
     } else {
@@ -147,7 +128,7 @@ export function useBiabCalculator({
     // For metric: Tw = (0.41 / R) * (Tmash - Tgrain) + Tmash where R is L/kg
     const waterToGrainRatio = w / l;
     let s;
-    if (liquidUnit === LiquidUnit.Gallons && grainBillUnit === GrainBillUnit.Pounds) {
+    if (liquidUnit === Unit.Gallons && grainBillUnit === Unit.Pounds) {
       // US: convert gal/lb to qt/lb by multiplying by 4
       const ratioInQuarts = waterToGrainRatio * 4;
       s = (0.2 / ratioInQuarts) * (j - i) + j;

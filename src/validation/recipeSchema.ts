@@ -1,28 +1,68 @@
 import * as yup from 'yup';
 import { 
-  GrainBillUnit, 
-  IngredientType, 
-  LiquidUnit, 
-  TempUnit, 
-  TimeUnit, 
+  Unit, 
+  IngredientType,
   StepAdded } from '../types';
+
+/**
+ * Before Water Profile
+ */
+export const beforeWaterProfile = yup.object({
+  id: yup.string().required().nullable(),
+  solidUnit: yup.number().required("Solid unit is required"),
+  calcium: yup.number().required("Calcium is required"),
+  magnesium: yup.number().required("Magnesium is required"),
+  sodium: yup.number().required("Sodium is required"),
+  chloride: yup.number().required("Chloride is required"),
+  sulfate: yup.number().required("Sulfate is required"),
+  alkalinity: yup.number().required("Alkalinity is required"),
+})
+
+/**
+ * After Water Profile
+ */
+export const afterWaterProfile = yup.object({
+  id: yup.string().required().nullable(),
+  solidUnit: yup.number().required("Solid unit is required"),
+  calcium: yup.number().required("Calcium is required"),
+  magnesium: yup.number().required("Magnesium is required"),
+  sodium: yup.number().required("Sodium is required"),
+  chloride: yup.number().required("Chloride is required"),
+  sulfate: yup.number().required("Sulfate is required"),
+})
+
+/**
+ * After Water Profile
+ */
+export const waterAdditions = yup.object({
+  id: yup.string().required().nullable(),
+  solidUnit: yup.number().required("Solid unit is required"),
+  liquidUnit: yup.number().required("Liquid unit is required"),
+  gypsum: yup.number().required("Gypsum is required"),
+  calciumChloride: yup.number().required("Calcium chloride is required"),
+  epsomSalt: yup.number().required("Epsom salt is required"),
+  slakedLime: yup.number().required("Slaked Lime is required"),
+  bakingSoda: yup.number().required("Baking soda is required"),
+  chalk: yup.number().required("chalk is required"),
+  lacticAcid: yup.number().required("Lactic acid is required"),
+})
 
 /**
  * Brew In A Bag Schema
  */
 export const brewInABagSettings = yup.object({
   id: yup.string().required().nullable(),
-  grainBillUnit: yup.mixed<GrainBillUnit>()
-    .oneOf(Object.values(GrainBillUnit))
+  grainBillUnit: yup.mixed<Unit>()
+    .oneOf(Object.values(Unit))
     .required("Grain bill unit is required"),
-  tempUnit: yup.mixed<TempUnit>()
-    .oneOf(Object.values(TempUnit))
+  tempUnit: yup.mixed<Unit>()
+    .oneOf(Object.values(Unit))
     .required("Temp unit is required"),
-  timeUnit: yup.mixed<TimeUnit>()
-    .oneOf(Object.values(TimeUnit))
+  timeUnit: yup.mixed<Unit>()
+    .oneOf(Object.values(Unit))
     .required("Time unit is required"),
-  liquidUnit: yup.mixed<LiquidUnit>()
-    .oneOf(Object.values(LiquidUnit))
+  liquidUnit: yup.mixed<Unit>()
+    .oneOf(Object.values(Unit))
     .required("Liquid unit is required"),
   grainBill: yup.number().required("Grain bill is required"),
   grainTemp: yup.number().required("Grain Temperature is required"),
