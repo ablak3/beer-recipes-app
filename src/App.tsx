@@ -12,6 +12,7 @@ import RecipeStepIngredients from "./pages/create-recipe/RecipeStepIngredients";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
 import NotFound from "./pages/NotFound";
+import RecipeStepWaterChemistry from "./pages/create-recipe/RecipeStepWaterChemistry";
 
 function App() {
   return (
@@ -32,9 +33,22 @@ function App() {
 
             {/* ✅ Protect nested “Create Recipe” routes */}
             <Route path="/create" element={<CreateRecipeLayout />}>
-              <Route index element={<RecipeStepBasic />} />
-              <Route path="/create/details" element={<RecipeStepBasic />} />
-              <Route path="/create/brewSettings" element={<RecipeStepBrew />} />
+              <Route 
+                index 
+                element={<RecipeStepBasic />} 
+              />
+              <Route 
+                path="/create/details" 
+                element={<RecipeStepBasic />} 
+              />
+              <Route 
+                path="/create/brewSettings" 
+                element={<RecipeStepBrew />} 
+              />
+              <Route 
+                path="/create/waterChemistrySettings" 
+                element={<RecipeStepWaterChemistry />} 
+              />
               <Route
                 path="/create/ingredients"
                 element={<RecipeStepIngredients />}

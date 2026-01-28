@@ -18,6 +18,7 @@ import { useLocalStorage } from "../../hooks/useLocalStorage";
 const steps = [
   { label: "Basic Info", path: "/create" },
   { label: "Brew Settings", path: "/create/brewSettings" },
+  { label: "Water Chemistry Settings", path: "/create/waterChemistrySettings" },
   { label: "Ingredients", path: "/create/ingredients" },
 ];
 
