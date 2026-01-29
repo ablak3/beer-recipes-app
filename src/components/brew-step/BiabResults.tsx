@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { Typography } from "@mui/material";
 import { useFormContext } from "react-hook-form";
-import { useBiabCalculator } from "../hooks/useBiabCalculator";
-import { BrewInABagSettings } from "../types";
+import { useBiabCalculator } from "../../hooks/useBiabCalculator";
+import { BrewInABagSettings } from "../../types";
 
 interface BiabResultsProps {
   biabValues: BrewInABagSettings;

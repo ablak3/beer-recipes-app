@@ -7,21 +7,22 @@ import {
 /**
  * Before Water Profile
  */
-export const beforeWaterProfile = yup.object({
+export const waterChemistryInputs = yup.object({
   id: yup.string().required().nullable(),
   solidUnit: yup.number().required("Solid unit is required"),
-  calcium: yup.number().required("Calcium is required"),
-  magnesium: yup.number().required("Magnesium is required"),
-  sodium: yup.number().required("Sodium is required"),
-  chloride: yup.number().required("Chloride is required"),
-  sulfate: yup.number().required("Sulfate is required"),
-  alkalinity: yup.number().required("Alkalinity is required"),
+  startingCalcium: yup.number().required("Calcium is required"),
+  startingMagnesium: yup.number().required("Magnesium is required"),
+  startingSodium: yup.number().required("Sodium is required"),
+  startingChloride: yup.number().required("Chloride is required"),
+  startingSulfate: yup.number().required("Sulfate is required"),
+  startingBicarbonate: yup.number().required("Alkalinity is required"),
+  roPercentage: yup.number().required("RO Percentage is required"),
 })
 
 /**
  * After Water Profile
  */
-export const afterWaterProfile = yup.object({
+export const waterChemistryResults = yup.object({
   id: yup.string().required().nullable(),
   solidUnit: yup.number().required("Solid unit is required"),
   calcium: yup.number().required("Calcium is required"),
@@ -32,7 +33,7 @@ export const afterWaterProfile = yup.object({
 })
 
 /**
- * After Water Profile
+ * Water Additions
  */
 export const waterAdditions = yup.object({
   id: yup.string().required().nullable(),
@@ -122,6 +123,8 @@ export const recipeSchema = yup.object({
   description: yup.string().required("Description is required"),
   brewInABagSettings: brewInABagSettings.required("Brew in a bag settings are required"),
   brewInABagResults: brewInABagResults.required("Brew in a bag results are required"),
+  waterChemistryInputs: waterChemistryInputs.required("Water chemistry inputs are required"),
+  WaterChemistryResults: waterChemistryResults.required("Water chemistry results are required"),
   ingredients: yup.array().of(ingredientSchema)
     .default([])
     .min(1, "At least one ingredient is required")

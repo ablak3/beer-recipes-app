@@ -1,21 +1,28 @@
 import React from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { Grid, TextField, MenuItem } from "@mui/material";
-import { Unit } from "../types";
-import { RecipeFormValues } from "../validation/recipeSchema";
+import { Unit } from "../../types";
+import { RecipeFormValues } from "../../validation/recipeSchema";
 
 export default function UnitSelectors() {
-  const {control, formState: { errors }} = useFormContext<RecipeFormValues>();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<RecipeFormValues>();
 
   const units: {
-  field: keyof RecipeFormValues["brewInABagSettings"];
-  label: string;
-  options: string[]
-}[] = [
-    { field: "grainBillUnit", label: "Grain Bill Unit", options: Object.values(Unit)},
+    field: keyof RecipeFormValues["brewInABagSettings"];
+    label: string;
+    options: string[];
+  }[] = [
+    {
+      field: "grainBillUnit",
+      label: "Grain Bill Unit",
+      options: Object.values(Unit),
+    },
     { field: "tempUnit", label: "Temp Unit", options: Object.values(Unit) },
     { field: "timeUnit", label: "Time Unit", options: Object.values(Unit) },
-    { field: "liquidUnit", label: "Liquid Unit", options: Object.values(Unit)},
+    { field: "liquidUnit", label: "Liquid Unit", options: Object.values(Unit) },
   ];
 
   return (

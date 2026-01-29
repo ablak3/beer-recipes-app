@@ -1,115 +1,11 @@
 import { useEffect, useState, useDeferredValue, useMemo } from 'react';
-
-export interface Grain {
-  name: string;
-  weight: number;
-  lovibold: number;
-}
-
-export interface WaterChemistryInputs {
-  // Starting water profile (ppm)
-  startingCalcium: number;
-  startingMagnesium: number;
-  startingSodium: number;
-  startingChloride: number;
-  startingSulfate: number;
-  startingBicarbonate: number;
-  
-  // Water volumes (gallons)
-  mashWaterVolume: number;
-  spargeWaterVolume: number;
-  
-  // Grain bill
-  grainBill: Grain[];
-  
-  // Salt additions to mash (grams)
-  mashGypsumCaSO4: number;
-  mashCalciumChlorideCaCl2: number;
-  mashEpsomSaltMgSO4: number;
-  mashTableSaltNaCl: number;
-  mashBakingSodaNaHCO3: number;
-  mashChalkCaCO3: number;
-  
-  // Salt additions to sparge (grams)
-  spargeGypsumCaSO4: number;
-  spargeCalciumChlorideCaCl2: number;
-  spargeEpsomSaltMgSO4: number;
-  spargeTableSaltNaCl: number;
-  spargeBakingSodaNaHCO3: number;
-  spargeChalkCaCO3: number;
-  
-  // Acid additions
-  lacticAcidML: number;
-  
-  // RO/Distilled water percentage
-  roPercentage: number;
-}
-
-export interface WaterChemistryResults {
-  // Mash water profile
-  mashCalcium: number;
-  mashMagnesium: number;
-  mashSodium: number;
-  mashChloride: number;
-  mashSulfate: number;
-  mashBicarbonate: number;
-  
-  // Sparge water profile
-  spargeCalcium: number;
-  spargeMagnesium: number;
-  spargeSodium: number;
-  spargeChloride: number;
-  spargeSulfate: number;
-  spargeBicarbonate: number;
-  
-  // Combined water profile
-  totalCalcium: number;
-  totalMagnesium: number;
-  totalSodium: number;
-  totalChloride: number;
-  totalSulfate: number;
-  totalBicarbonate: number;
-  
-  // Ratios and pH
-  chlorideSulfateRatio: number;
-  residualAlkalinity: number;
-  estimatedMashPH: number;
-  
-  // Warnings
-  warnings: string[];
-}
+import { WaterChemistryInputs, WaterChemistryResults } from '../types';
+import { defaultWaterChemistryResults } from '../constants/defaultRecipeValues';
 
 export function useWaterChemistry(inputs: WaterChemistryInputs): WaterChemistryResults {
   const deferredInputs = useDeferredValue(inputs);
 
-  const [results, setResults] = useState<WaterChemistryResults>({
-    mashCalcium: 0,
-    mashMagnesium: 0,
-    mashSodium: 0,
-    mashChloride: 0,
-    mashSulfate: 0,
-    mashBicarbonate: 0,
-    
-    spargeCalcium: 0,
-    spargeMagnesium: 0,
-    spargeSodium: 0,
-    spargeChloride: 0,
-    spargeSulfate: 0,
-    spargeBicarbonate: 0,
-    
-    totalCalcium: 0,
-    totalMagnesium: 0,
-    totalSodium: 0,
-    totalChloride: 0,
-    totalSulfate: 0,
-    totalBicarbonate: 0,
-    
-    chlorideSulfateRatio: 0,
-    residualAlkalinity: 0,
-    estimatedMashPH: 0,
-    
-    warnings: [],
-  });
+  const [results, setResults] = useState<WaterChemistryResults>(defaultWaterChemistryResults);
 
   useEffect(() => {
     const {

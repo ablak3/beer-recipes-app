@@ -85,6 +85,86 @@ export interface BrewInABagResults {
   intoFermenter: number;
 }
 
+export interface Grain {
+  type: string;
+  name: string;
+  weight: number;
+  lovibold: number;
+}
+
+export interface WaterChemistryInputs {
+  // Starting water profile (ppm)
+  startingCalcium: number;
+  startingMagnesium: number;
+  startingSodium: number;
+  startingChloride: number;
+  startingSulfate: number;
+  startingBicarbonate: number;
+  
+  // Water volumes (gallons)
+  mashWaterVolume: number;
+  spargeWaterVolume: number;
+  
+  // Grain bill
+  grainBill: Grain[];
+  
+  // Salt additions to mash (grams)
+  mashGypsumCaSO4: number;
+  mashCalciumChlorideCaCl2: number;
+  mashEpsomSaltMgSO4: number;
+  mashTableSaltNaCl: number;
+  mashBakingSodaNaHCO3: number;
+  mashChalkCaCO3: number;
+  
+  // Salt additions to sparge (grams)
+  spargeGypsumCaSO4: number;
+  spargeCalciumChlorideCaCl2: number;
+  spargeEpsomSaltMgSO4: number;
+  spargeTableSaltNaCl: number;
+  spargeBakingSodaNaHCO3: number;
+  spargeChalkCaCO3: number;
+  
+  // Acid additions
+  lacticAcidML: number;
+  
+  // RO/Distilled water percentage
+  roPercentage: number;
+}
+
+export interface WaterChemistryResults {
+  // Mash water profile
+  mashCalcium: number;
+  mashMagnesium: number;
+  mashSodium: number;
+  mashChloride: number;
+  mashSulfate: number;
+  mashBicarbonate: number;
+  
+  // Sparge water profile
+  spargeCalcium: number;
+  spargeMagnesium: number;
+  spargeSodium: number;
+  spargeChloride: number;
+  spargeSulfate: number;
+  spargeBicarbonate: number;
+  
+  // Combined water profile
+  totalCalcium: number;
+  totalMagnesium: number;
+  totalSodium: number;
+  totalChloride: number;
+  totalSulfate: number;
+  totalBicarbonate: number;
+  
+  // Ratios and pH
+  chlorideSulfateRatio: number;
+  residualAlkalinity: number;
+  estimatedMashPH: number;
+  
+  // Warnings
+  warnings: string[];
+}
+
 export enum IngredientType {
   Hop = "Hop",
   Salt = "Salt",

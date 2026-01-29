@@ -1,31 +1,25 @@
-import { useFormContext, Controller } from "react-hook-form";
+import { useFormContext, Controller, Path } from "react-hook-form";
 import { Grid, TextField } from "@mui/material";
 import { RecipeFormValues } from "../validation/recipeSchema";
+import { NumericField } from "../constants/defautNumericValues";
 
-const numericFields: {
-  name: keyof RecipeFormValues["brewInABagSettings"];
-  label: string;
-}[] =  [
-  { name: "grainBill", label: "Grain Bill" },
-  { name: "grainTemp", label: "Grain Temperature" },
-  { name: "batchSize", label: "Batch Size" },
-  { name: "mashTemp", label: "Mash Temp" },
-  { name: "boilTime", label: "Boil Time" },
-  { name: "kettleSize", label: "Kettle Size" },
-  { name: "trub", label: "Trub" },
-  { name: "boilOffRate", label: "Boil Off Rate" },
-  { name: "grainAbsorptionRate", label: "Grain Absorption Rate" },
-];
+interface NumericInputsProps<T extends object> {
+  fields: NumericField<T>[];
+  basePath: Path<RecipeFormValues>;
+}
 
-export default function NumericInputs() {
+export default function NumericInputs<T extends object>({
+  fields,
+  basePath,
+}: NumericInputsProps<T>) {
   const { control } = useFormContext<RecipeFormValues>();
 
   return (
     <Grid container spacing={2} sx={{ mt: 1 }}>
-      {numericFields.map(({ name, label }) => (
-        <Grid key={name} size={{xs:12, sm:3}}>
+      {fields.map(({ name, label }) => (
+        <Grid key={String(name)} size={{ xs: 12, sm: 3 }}>
           <Controller
-            name={`brewInABagSettings.${name}` as const}
+            name={`${basePath}.${String(name)}` as Path<RecipeFormValues>}
             control={control}
             render={({ field, fieldState }) => (
               <TextField

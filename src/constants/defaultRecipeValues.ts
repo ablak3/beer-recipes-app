@@ -7,43 +7,113 @@ import { BrewInABagResults,
   BeforeWaterProfile,
   AfterWaterProfile,
   WaterAdditions,
-  IngredientType
+  IngredientType,
+  WaterChemistryInputs,
+  WaterChemistryResults
 } from "../types";
 
+export const defaultWaterChemistryResults: WaterChemistryResults = {
+  mashCalcium: 0,
+  mashMagnesium: 0,
+  mashSodium: 0,
+  mashChloride: 0,
+  mashSulfate: 0,
+  mashBicarbonate: 0,
+  
+  spargeCalcium: 0,
+  spargeMagnesium: 0,
+  spargeSodium: 0,
+  spargeChloride: 0,
+  spargeSulfate: 0,
+  spargeBicarbonate: 0,
+  
+  totalCalcium: 0,
+  totalMagnesium: 0,
+  totalSodium: 0,
+  totalChloride: 0,
+  totalSulfate: 0,
+  totalBicarbonate: 0,
+  
+  chlorideSulfateRatio: 0,
+  residualAlkalinity: 0,
+  estimatedMashPH: 0,
+  
+  warnings: [],
+}
+
+export const defaultWaterChemistryInputs: WaterChemistryInputs = {
+  // Starting water profile
+  startingCalcium: 0,
+  startingMagnesium: 0,
+  startingSodium: 0,
+  startingChloride: 0,
+  startingSulfate: 0,
+  startingBicarbonate: 0,
+  
+  // Water volumes
+  mashWaterVolume: 0,
+  spargeWaterVolume: 0,
+  
+  // Grain bill
+  grainBill: [],
+  
+  // Mash salt additions
+  mashGypsumCaSO4: 0,
+  mashCalciumChlorideCaCl2: 0,
+  mashEpsomSaltMgSO4: 0,
+  mashTableSaltNaCl: 0,
+  mashBakingSodaNaHCO3: 0,
+  mashChalkCaCO3: 0,
+  
+  // Sparge salt additions
+  spargeGypsumCaSO4: 0,
+  spargeCalciumChlorideCaCl2: 0,
+  spargeEpsomSaltMgSO4: 0,
+  spargeTableSaltNaCl: 0,
+  spargeBakingSodaNaHCO3: 0,
+  spargeChalkCaCO3: 0,
+  
+  // Acid
+  lacticAcidML: 0,
+  
+  // RO percentage
+  roPercentage: 0,
+}
+
 export const defaultIngredient: Ingredient = {
-      id: null,
-      type: IngredientType.Other,
-      name: "",
-      amount: 0,
-      units: "",
-      stepAdded: StepAdded.PreBoil,
-      timeAdded: "NA"
+  id: null,
+  type: IngredientType.Other,
+  name: "",
+  amount: 0,
+  units: "",
+  stepAdded: StepAdded.PreBoil,
+  timeAdded: "NA"
 };
 
 export const defaultBrewInABagSettings: BrewInABagSettings = {
-    id: null,
-    grainBillUnit: Unit.Pounds,
-    tempUnit: Unit.Fahrenheit,
-    timeUnit: Unit.Minutes,
-    liquidUnit: Unit.Gallons,
-    grainBill: 10,
-    batchSize: 5.5,
-    mashTemp: 153,
-    boilTime: 60,
-    kettleSize: 15,
-    trub: 0.25,
-    boilOffRate: 1.25,
-    grainAbsorptionRate: 0.045,
-    grainTemp: 70
+  id: null,
+  grainBillUnit: Unit.Pounds,
+  tempUnit: Unit.Fahrenheit,
+  timeUnit: Unit.Minutes,
+  liquidUnit: Unit.Gallons,
+  grainBill: 10,
+  batchSize: 5.5,
+  mashTemp: 153,
+  boilTime: 60,
+  kettleSize: 15,
+  trub: 0.25,
+  boilOffRate: 1.25,
+  grainAbsorptionRate: 0.045,
+  grainTemp: 70
 };
 
 export const defaultBrewInABagResults: BrewInABagResults = {
-    totalWaterNeeded: 0,
-    strikeWaterTemp: 0,
-    totalMashVolume: 0,
-    preBoilWort: 0,
-    postBoilWort: 0,
-    intoFermenter: 0
+  totalWaterNeeded: 0,
+  strikeWaterTemp: 0,
+  totalMashVolume: 0,
+  preBoilWort: 0,
+  postBoilWort: 0,
+  intoFermenter: 0
 };
 
 export const defaultBeforeWaterProfile: BeforeWaterProfile = {

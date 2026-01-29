@@ -1,9 +1,10 @@
 import { useFormContext, useWatch } from "react-hook-form";
 import { Typography } from "@mui/material";
 import { RecipeFormValues } from "../../validation/recipeSchema";
-import UnitSelectors from "../../components/UnitSelectors";
+import UnitSelectors from "../../components/brew-step/UnitSelectors";
 import NumericInputs from "../../components/NumbericInputs";
-import BiabResults from "../../components/BiabResults";
+import { brewInABagNumericFields } from "../../constants/defautNumericValues";
+import BiabResults from "../../components/brew-step/BiabResults";
 
 export default function RecipeStepBrew() {
   const { control } = useFormContext<RecipeFormValues>();
@@ -16,7 +17,10 @@ export default function RecipeStepBrew() {
       </Typography>
 
       <UnitSelectors />
-      <NumericInputs />
+      <NumericInputs
+        fields={brewInABagNumericFields}
+        basePath="brewInABagSettings"
+      />
       <BiabResults biabValues={biabValues} />
     </div>
   );
