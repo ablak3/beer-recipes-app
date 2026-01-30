@@ -19,6 +19,45 @@ export const waterChemistryInputs = yup.object({
   roPercentage: yup.number().required("RO Percentage is required"),
 })
 
+export const waterVolumes = yup.object({
+  id: yup.string().required().nullable(),
+  mashWater: yup.number().required("Mash water is required"),
+  spargeWater: yup.number().required("Sparge water is required"),
+})
+
+export const mashSaltAdditions = yup.object({
+  id: yup.string().required().nullable(),
+  mashGypsumCaSO4: yup.number().required("Mash gypsum is required"),
+  mashCalciumChlorideCaCl2: yup.number().required("Mash calcium chloride is required"),
+  mashEpsomSaltMgSO4: yup.number().required("Mash epsom salt is required"),
+  mashTableSaltNaCl: yup.number().required("Mash table salt is required"),
+  mashBakingSodaNaHCO3: yup.number().required("Mash baking soda is required"),
+  mashChalkCaCO3: yup.number().required("Mash chalk is required"),
+})
+
+export const spargeSaltAdditions = yup.object({
+  id: yup.string().required().nullable(),
+  spargeGypsumCaSO4: yup.number().required("Sparge gypsum is required"),
+  spargeCalciumChlorideCaCl2: yup.number().required("Sparge calcium chloride is required"),
+  spargeEpsomSaltMgSO4: yup.number().required("Sparge epsom salt is required"),
+  spargeTableSaltNaCl: yup.number().required("Sparge table salt is required"),
+  spargeBakingSodaNaHCO3: yup.number().required("Sparge baking soda is required"),
+  spargeChalkCaCO3: yup.number().required("Sparge chalk is required"),
+})
+
+export const acidAdditions = yup.object({
+  id: yup.string().required().nullable(),
+  lacticAcid: yup.number().required("Lactic acid is required"),
+})
+
+export const grain = yup.object({
+  id: yup.string().required().nullable(),
+  type: yup.string().required("type is required"),
+  name: yup.string().required("name is required"),
+  weight: yup.number().required("weight is required"),
+  lovibond: yup.number().required("lovibond is required"),
+})
+
 /**
  * After Water Profile
  */
@@ -124,7 +163,15 @@ export const recipeSchema = yup.object({
   brewInABagSettings: brewInABagSettings.required("Brew in a bag settings are required"),
   brewInABagResults: brewInABagResults.required("Brew in a bag results are required"),
   waterChemistryInputs: waterChemistryInputs.required("Water chemistry inputs are required"),
-  WaterChemistryResults: waterChemistryResults.required("Water chemistry results are required"),
+  waterChemistryResults: waterChemistryResults.required("Water chemistry results are required"),
+  grains: yup.array().of(grain)
+    .default([])
+    .min(1, "At least one grain is required")
+    .required("grains are required"),
+  waterVolumes: waterVolumes.required("Water volumes is required"),
+  mashSaltAdditions: mashSaltAdditions.required("Mash salt additions are required"),
+  spargeSaltAdditions: spargeSaltAdditions.required("Sparge salt additions are requred"),
+  acidAdditions: acidAdditions.required("Acid additions is required"),
   ingredients: yup.array().of(ingredientSchema)
     .default([])
     .min(1, "At least one ingredient is required")

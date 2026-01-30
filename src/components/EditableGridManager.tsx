@@ -1,78 +1,84 @@
 import React from "react";
-
-interface Column {
-  label: string;
-  span: number; // out of 12
-}
+import {
+  Typography,
+  Grid,
+  Divider,
+  Button,
+  IconButton,
+} from "@mui/material";
+import { RemoveCircle } from "@mui/icons-material";
 
 interface EditableGridManagerProps<T> {
   title: string;
   items: T[];
-  columns: Column[];
   renderRow: (item: T, index: number) => React.ReactNode;
   onAdd: () => void;
   onRemove: (index: number) => void;
   emptyText?: string;
   addLabel?: string;
+  minItems?: number;
 }
 
 export default function EditableGridManager<T>({
   title,
   items,
-  columns,
   renderRow,
   onAdd,
   onRemove,
   emptyText = "No items added yet.",
-  addLabel = "Add Item"
+  addLabel = "Add Item",
+  minItems = 0,
 }: EditableGridManagerProps<T>) {
   return (
-    <div className="mb-6">
-      <h3 className="text-lg font-semibold mb-3">{title}</h3>
+    <>
+      <Typography variant="h5" gutterBottom>
+        {title}
+      </Typography>
 
-      {/* Header */}
-      <div className="grid grid-cols-12 gap-2 text-xs font-semibold text-gray-600 mb-2">
-        {columns.map((col, i) => (
-          <div key={i} className={`col-span-${col.span}`}>
-            {col.label}
-          </div>
-        ))}
-        <div className="col-span-1" />
-      </div>
+      <Divider sx={{ my: 2 }} />
 
-      {/* Empty state */}
       {items.length === 0 && (
-        <div className="text-sm text-gray-500 py-4 text-center">
+        <Typography 
+          variant="body2" 
+          color="text.secondary" 
+          sx={{ py: 4, textAlign: 'center' }}
+        >
           {emptyText}
-        </div>
+        </Typography>
       )}
 
-      {/* Rows */}
       {items.map((item, index) => (
-        <div
+        <Grid
+          container
+          spacing={2}
+          alignItems="center"
           key={index}
-          className="grid grid-cols-12 gap-2 mb-2 items-center"
+          sx={{ mb: 2 }}
         >
           {renderRow(item, index)}
 
-          <div className="col-span-1 text-right">
-            <button
+          {/* Add / Remove Buttons */}
+          <Grid size={{ xs: 12, sm: 2 }}>
+            <IconButton
+              color="error"
               onClick={() => onRemove(index)}
-              className="text-red-500 text-sm hover:text-red-700"
+              disabled={items.length <= minItems}
             >
-              Remove
-            </button>
-          </div>
-        </div>
+              <RemoveCircle />
+            </IconButton>
+          </Grid>
+        </Grid>
       ))}
 
-      {/* Add button */}
-      <button
+      <Divider sx={{ my: 3 }} />
+
+      <Button
+        variant="outlined"
+        color="primary"
         onClick={onAdd}
-        className="mt-3 w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 text-sm"
       >
-        + {addLabel}
-      </button>
-    </div>
+        {addLabel}
+      </Button>
+    </>
   );
 }

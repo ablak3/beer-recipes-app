@@ -6,6 +6,7 @@ export interface Recipe {
   brewInABagResults: BrewInABagResults;
   beforeWaterProfile: BeforeWaterProfile;
   afterWaterProfile: AfterWaterProfile;
+  grains: Grain[];
   waterAdditions: WaterAdditions;
   ingredients: Ingredient[];
   instructions: string;
@@ -89,7 +90,7 @@ export interface Grain {
   type: string;
   name: string;
   weight: number;
-  lovibold: number;
+  lovibond: number;
 }
 
 export interface WaterChemistryInputs {

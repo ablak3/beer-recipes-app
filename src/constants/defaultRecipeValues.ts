@@ -9,7 +9,8 @@ import { BrewInABagResults,
   WaterAdditions,
   IngredientType,
   WaterChemistryInputs,
-  WaterChemistryResults
+  WaterChemistryResults,
+  Grain
 } from "../types";
 
 export const defaultWaterChemistryResults: WaterChemistryResults = {
@@ -149,6 +150,13 @@ export const defaultWaterAdditions: WaterAdditions = {
   lacticAcid: 0
 }
 
+export const defaultGrain: Grain = {
+  type: "Base Malt", 
+  name: "", 
+  weight: 0, 
+  lovibond: 0 
+}
+
 export const defaultRecipeValues: Recipe = {
   id: null,
   title: "",
@@ -159,6 +167,7 @@ export const defaultRecipeValues: Recipe = {
   brewInABagResults: defaultBrewInABagResults,
   beforeWaterProfile: defaultBeforeWaterProfile,
   afterWaterProfile: defaultAfterWaterProfile,
+  grains: [defaultGrain],
   waterAdditions: defaultWaterAdditions,
   ingredients: [defaultIngredient],
   comments: [{ id: null, user: "", content: "" }],

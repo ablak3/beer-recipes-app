@@ -135,10 +135,10 @@ export function useWaterChemistry(inputs: WaterChemistryInputs): WaterChemistryR
     grainBill.forEach(grain => {
       totalGrainWeight += grain.weight;
       let grainPH = 5.7;
-      if (grain.lovibold > 300) grainPH = 4.5;
-      else if (grain.lovibold > 100) grainPH = 4.8;
-      else if (grain.lovibold > 40) grainPH = 5.2;
-      else if (grain.lovibold > 10) grainPH = 5.4;
+      if (grain.lovibond > 300) grainPH = 4.5;
+      else if (grain.lovibond > 100) grainPH = 4.8;
+      else if (grain.lovibond > 40) grainPH = 5.2;
+      else if (grain.lovibond > 10) grainPH = 5.4;
       
       weightedPH += grainPH * grain.weight;
     });

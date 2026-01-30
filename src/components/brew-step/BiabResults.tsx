@@ -1,8 +1,11 @@
 import { useEffect, useRef } from "react";
-import { Typography } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { useBiabCalculator } from "../../hooks/useBiabCalculator";
 import { BrewInABagSettings } from "../../types";
+import ResultCard from "../ResultCard";
+import Section from "../Section";
+import { roundTo } from "../numberUtils";
 
 interface BiabResultsProps {
   biabValues: BrewInABagSettings;
@@ -11,10 +14,10 @@ interface BiabResultsProps {
 export default function BiabResults({ biabValues }: BiabResultsProps) {
   const { setValue, getValues } = useFormContext();
 
-  // ✅ Calculate results once per biabValues change
+  // Calculate results when BIAB inputs change
   const results = useBiabCalculator(biabValues);
 
-  // ✅ Use ref to prevent redundant form updates
+  // Prevent redundant form updates
   const prevResultsRef = useRef<typeof results | null>(null);
 
   useEffect(() => {
@@ -22,7 +25,6 @@ export default function BiabResults({ biabValues }: BiabResultsProps) {
 
     let hasChanged = false;
 
-    // Only update changed fields
     for (const [key, value] of Object.entries(results)) {
       const current = getValues(`brewInABagSettings.${key}`);
       if (current !== value) {
@@ -34,7 +36,6 @@ export default function BiabResults({ biabValues }: BiabResultsProps) {
       }
     }
 
-    // Update ref only if changes happened
     if (hasChanged) {
       prevResultsRef.current = results;
     }
@@ -43,36 +44,54 @@ export default function BiabResults({ biabValues }: BiabResultsProps) {
   if (!results) return null;
 
   return (
-    <div style={{ marginTop: "1rem" }}>
-      <Typography variant="h6" gutterBottom>
-        BIAB Calculations
-      </Typography>
-      <ul>
-        <li>
-          Total Water Needed: {results.totalWaterNeeded.toFixed(2)}{" "}
-          {biabValues.liquidUnit}
-        </li>
-        <li>
-          Strike Water Temp: {results.strikeWaterTemp.toFixed(1)}{" "}
-          {biabValues.tempUnit}
-        </li>
-        <li>
-          Total Mash Volume: {results.totalMashVolume.toFixed(2)}{" "}
-          {biabValues.liquidUnit}
-        </li>
-        <li>
-          Pre-Boil Wort: {results.preBoilWort.toFixed(2)}{" "}
-          {biabValues.liquidUnit}
-        </li>
-        <li>
-          Post-Boil Wort: {results.postBoilWort.toFixed(2)}{" "}
-          {biabValues.liquidUnit}
-        </li>
-        <li>
-          Into Fermenter: {results.intoFermenter.toFixed(2)}{" "}
-          {biabValues.liquidUnit}
-        </li>
-      </ul>
-    </div>
+    <>
+      <Grid size={{ xs: 12, sm: 4 }}>
+        <ResultCard
+          label="Total Water Needed"
+          value={roundTo(results.totalWaterNeeded)}
+          unit={biabValues.liquidUnit}
+        />
+      </Grid>
+
+      <Grid size={{ xs: 12, sm: 4 }}>
+        <ResultCard
+          label="Strike Water Temperature"
+          value={roundTo(results.strikeWaterTemp)}
+          unit={biabValues.tempUnit}
+        />
+      </Grid>
+
+      <Grid size={{ xs: 12, sm: 4 }}>
+        <ResultCard
+          label="Total Mash Volume"
+          value={roundTo(results.totalMashVolume)}
+          unit={biabValues.liquidUnit}
+        />
+      </Grid>
+
+      <Grid size={{ xs: 12, sm: 4 }}>
+        <ResultCard
+          label="Pre-Boil Wort"
+          value={roundTo(results.preBoilWort)}
+          unit={biabValues.liquidUnit}
+        />
+      </Grid>
+
+      <Grid size={{ xs: 12, sm: 4 }}>
+        <ResultCard
+          label="Post-Boil Wort"
+          value={roundTo(results.postBoilWort)}
+          unit={biabValues.liquidUnit}
+        />
+      </Grid>
+
+      <Grid size={{ xs: 12, sm: 4 }}>
+        <ResultCard
+          label="Into Fermenter"
+          value={roundTo(results.intoFermenter)}
+          unit={biabValues.liquidUnit}
+        />
+      </Grid>
+    </>
   );
 }
