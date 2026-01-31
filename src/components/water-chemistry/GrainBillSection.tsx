@@ -145,7 +145,6 @@ export default function GrainBillSection({
 
   return (
     <EditableGridManager<Grain>
-      title="Grain Bill"
       items={grainBill}
       renderRow={renderGrainRow}
       onAdd={handleAddGrain}

@@ -9,7 +9,6 @@ import {
 import { RemoveCircle } from "@mui/icons-material";
 
 interface EditableGridManagerProps<T> {
-  title: string;
   items: T[];
   renderRow: (item: T, index: number) => React.ReactNode;
   onAdd: () => void;
@@ -20,7 +19,6 @@ interface EditableGridManagerProps<T> {
 }
 
 export default function EditableGridManager<T>({
-  title,
   items,
   renderRow,
   onAdd,
@@ -31,12 +29,6 @@ export default function EditableGridManager<T>({
 }: EditableGridManagerProps<T>) {
   return (
     <>
-      <Typography variant="h5" gutterBottom>
-        {title}
-      </Typography>
-
-      <Divider sx={{ my: 2 }} />
-
       {items.length === 0 && (
         <Typography 
           variant="body2" 

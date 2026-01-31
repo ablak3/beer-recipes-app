@@ -1,10 +1,9 @@
 import { useEffect, useRef } from "react";
-import { Grid, Stack } from "@mui/material";
+import { Grid } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { useBiabCalculator } from "../../hooks/useBiabCalculator";
 import { BrewInABagSettings } from "../../types";
 import ResultCard from "../ResultCard";
-import Section from "../Section";
 import { roundTo } from "../numberUtils";
 
 interface BiabResultsProps {

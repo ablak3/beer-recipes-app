@@ -1,12 +1,11 @@
-import { Typography, TextField } from "@mui/material";
-import { useFormContext } from "react-hook-form";
-import { RecipeFormValues } from "../../validation/recipeSchema";
+import { Typography, TextField, Stack } from "@mui/material";
+import { useRecipe } from "../../hooks/useRecipe";
 
 export default function RecipeStepBasic() {
-  const { register, formState: { errors } } = useFormContext<RecipeFormValues>();
+  const { recipe, updateBasicInfo } = useRecipe();
 
   return (
-    <>
+    <Stack spacing={3}>
       <Typography variant="h5" gutterBottom>
         Basic Information
       </Typography>
@@ -14,31 +13,33 @@ export default function RecipeStepBasic() {
       <TextField
         label="Title"
         fullWidth
-        margin="normal"
-        {...register("title")}
-        error={!!errors.title}
-        helperText={errors.title?.message}
+        value={recipe.title}
+        onChange={(e) => updateBasicInfo('title', e.target.value)}
+        placeholder="e.g., Summer Pale Ale"
+        required
       />
 
       <TextField
         label="Description"
         fullWidth
-        margin="normal"
-        {...register("description")}
-        error={!!errors.description}
-        helperText={errors.description?.message}
+        value={recipe.description}
+        onChange={(e) => updateBasicInfo('description', e.target.value)}
+        placeholder="Describe your recipe..."
+        multiline
+        rows={3}
+        required
       />
 
       <TextField
         label="Instructions"
         fullWidth
         multiline
-        minRows={3}
-        margin="normal"
-        {...register("instructions")}
-        error={!!errors.instructions}
-        helperText={errors.instructions?.message}
+        minRows={5}
+        value={recipe.instructions}
+        onChange={(e) => updateBasicInfo('instructions', e.target.value)}
+        placeholder="Step-by-step brewing instructions..."
+        required
       />
-    </>
+    </Stack>
   );
 }

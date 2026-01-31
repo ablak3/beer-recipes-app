@@ -18,14 +18,14 @@ export default function Section({
   columns = 1
 }: SectionProps) {
   return (
-    <Box sx={{ mt: 4}}>
+    <Box sx={{ mt: 6}}>
       <Typography variant="h5" gutterBottom >
         {title}
       </Typography>
       <Grid container spacing={2} sx={{ mb: 4 }}>
         {children}
       </Grid>
-      <Divider sx={{ my: 2 }} />
+      <Divider sx={{ mb: 2 }} />
     </Box>
   );
 }

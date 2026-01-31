@@ -1,12 +1,11 @@
-import { useState } from "react";
+import { useEffect } from "react";
+import { Stack } from "@mui/material";
+import { useRecipe } from "../../hooks/useRecipe";
 import { useWaterChemistry } from "../../hooks/useWaterChemistry";
-import { WaterChemistryInputs } from "../../types";
-import { defaultWaterChemistryInputs } from "../../constants/defaultRecipeValues";
 import Section from "../../components/Section";
 import GrainBillSection from "../../components/water-chemistry/GrainBillSection";
-import NumericInputs from "../../components/Inputs";
 import WaterProfileResults from "../../components/water-chemistry/WaterProfileResults";
-
+import Inputs from "../../components/Inputs"
 import {
   startingWaterChemistryNumericFields,
   waterVolumes,
@@ -16,74 +15,75 @@ import {
 } from "../../constants/defautNumericValues";
 
 export default function RecipeStepWaterChemistry() {
-  const [inputs, setInputs] = useState<WaterChemistryInputs>(
-    defaultWaterChemistryInputs
-  );
-  const results = useWaterChemistry(inputs);
+  const { 
+    waterChemistryInputs, 
+    updateWaterChemistryInput,
+    updateWaterChemistryResults,
+  } = useRecipe();
+  
+  const results = useWaterChemistry(waterChemistryInputs);
 
-  const updateInput = (field: keyof WaterChemistryInputs, value: number) => {
-    setInputs((prev) => ({ ...prev, [field]: value }));
-  };
+  // Update results in context whenever they change
+  useEffect(() => {
+    updateWaterChemistryResults(results);
+  }, [results, updateWaterChemistryResults]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-6">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold text-gray-800 mb-2">
-          Brewing Water Chemistry Calculator
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Calculate mineral additions and mash pH for your brew
-        </p>
+    <Stack spacing={6}>
+      <Section title="Water Chemistry">
+        <Section title="Starting Water Profile (ppm)">
+          <Inputs
+            fields={startingWaterChemistryNumericFields}
+            basePath="waterChemistryInputs"
+          />
+        </Section>
 
-        <div className="grid lg:grid-cols-3 gap-6">
-          {/* COLUMN 1 */}
-          <div className="space-y-6">
-            <Section title="Starting Water Profile (ppm)">
-              <NumericInputs
-                fields={startingWaterChemistryNumericFields}
-                basePath="waterChemistryInputs"
+        <Section title="Water Volumes">
+          <Inputs fields={waterVolumes} basePath="waterVolumes" />
+        </Section>
+
+        <Section title="Grain Bill">
+          <GrainBillSection
+          grainBill={waterChemistryInputs.grainBill}
+          setInputs={(updater) => {
+            const newInputs = typeof updater === 'function' 
+              ? updater(waterChemistryInputs) 
+              : updater;
+            
+            Object.entries(newInputs).forEach(([key, value]) => {
+              updateWaterChemistryInput(key as any, value);
+            });
+          }}
+        />
+        </Section>
+      </Section>
+
+      {/* COLUMN 2 */}
+        <div className="space-y-6">
+          {waterChemistryInputs.mashWaterVolume > 0 && (
+            <Section title="Mash Salt Additions (g)" columns={3}>
+              <Inputs
+                fields={mashSaltAdditions}
+                basePath="mashSaltAdditions"
               />
             </Section>
+          )}
 
-            <Section title="Water Volumes" columns={2}>
-              <NumericInputs fields={waterVolumes} basePath="waterVolumes" />
+          {waterChemistryInputs.spargeWaterVolume > 0 && (
+            <Section title="Sparge Salt Additions (g)" columns={3}>
+              <Inputs
+                fields={spargeSaltAdditions}
+                basePath="spargeSaltAdditions"
+              />
             </Section>
+          )}
 
-            <GrainBillSection
-              grainBill={inputs.grainBill}
-              setInputs={setInputs}
-            />
-          </div>
-
-          {/* COLUMN 2 */}
-          <div className="space-y-6">
-            {inputs.mashWaterVolume > 0 && (
-              <Section title="Mash Salt Additions (g)" columns={3}>
-                <NumericInputs
-                  fields={mashSaltAdditions}
-                  basePath="mashSaltAdditions"
-                />
-              </Section>
-            )}
-
-            {inputs.spargeWaterVolume > 0 && (
-              <Section title="Sparge Salt Additions (g)" columns={3}>
-                <NumericInputs
-                  fields={spargeSaltAdditions}
-                  basePath="spargeSaltAdditions"
-                />
-              </Section>
-            )}
-
-            <Section title="Acid Additions" columns={2}>
-              <NumericInputs fields={acidAdditions} basePath="acidAdditions" />
-            </Section>
-          </div>
-
-          {/* COLUMN 3 */}
-          <WaterProfileResults results={results} />
+          <Section title="Acid Additions" columns={2}>
+            <Inputs fields={acidAdditions} basePath="acidAdditions" />
+          </Section>
         </div>
-      </div>
-    </div>
+
+      <WaterProfileResults results={results} />
+    </Stack>
   );
 }
