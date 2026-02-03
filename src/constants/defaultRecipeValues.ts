@@ -11,7 +11,12 @@ import {
   WaterChemistryResults,
   Grain,
   startingWaterProfile,
-  waterVolumes
+  waterVolumes,
+  ABVInputs,
+  ABVResults,
+  IBUResults,
+  Hop,
+  HopType,
 } from "../types";
 
 // Grain
@@ -112,7 +117,38 @@ export const defaultBrewInABagResults: BrewInABagResults = {
   intoFermenter: 0
 };
 
-// Complete Recipe
+// Hop
+export const defaultHop: Hop = {
+  id: null,
+  name: "",
+  alphaAcid: 0,
+  amount: 0,
+  type: HopType.Pellet,
+  boilTime: 0,
+  use: StepAdded.Boil,
+};
+
+// ABV Inputs
+export const defaultABVInputs: ABVInputs = {
+  originalGravity: 1.050,
+  finalGravity: 1.010,
+  mashEfficiency: 75,
+};
+
+// ABV Results
+export const defaultABVResults: ABVResults = {
+  abv: 0,
+  calories: 0,
+  attenuation: 0,
+};
+
+// IBU Results
+export const defaultIBUResults: IBUResults = {
+  totalIBU: 0,
+  hopContributions: [],
+};
+
+// Complete Recipe (updated)
 export const defaultRecipeValues: Recipe = {
   id: null,
   title: "",
@@ -120,11 +156,15 @@ export const defaultRecipeValues: Recipe = {
   instructions: "",
   author: "",
   grainBill: [defaultGrain],
+  hops: [defaultHop],
   brewInABagSettings: defaultBrewInABagSettings,
   brewInABagResults: defaultBrewInABagResults,
   waterChemistryInputs: defaultWaterChemistryInputs,
   waterChemistryResults: defaultWaterChemistryResults,
   waterAdjustments: defaultWaterAdjustments,
+  abvInputs: defaultABVInputs,
+  abvResults: defaultABVResults,
+  ibuResults: defaultIBUResults,
   ingredients: [defaultIngredient],
   comments: [],
 };

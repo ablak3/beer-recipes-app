@@ -3,11 +3,15 @@ export interface Recipe {
   title: string;
   description: string;
   grainBill: Grain[];
+  hops: Hop[];
   brewInABagSettings: BrewInABagSettings;
   brewInABagResults: BrewInABagResults;
   waterChemistryInputs: WaterChemistryInputs;
   waterChemistryResults: WaterChemistryResults;
   waterAdjustments: WaterAdjustments;
+  abvInputs: ABVInputs;
+  abvResults: ABVResults;
+  ibuResults: IBUResults;
   ingredients: Ingredient[];
   instructions: string;
   author: string;
@@ -126,6 +130,44 @@ export enum StepAdded {
   FirstWort = "FirstWort",
   Boil = "Boil",
   Fermentation = "Fermentation",
+}
+
+// ABV Calculation
+export interface ABVInputs {
+  originalGravity: number;
+  finalGravity: number;
+  mashEfficiency: number; // percentage (0-100)
+}
+
+export interface ABVResults {
+  abv: number;
+  calories: number;
+  attenuation: number;
+}
+
+// IBU Calculation
+export enum HopType {
+  Pellet = "Pellet",
+  Whole = "Whole",
+  Plugin = "Plugin",
+}
+
+export interface Hop {
+  id: string | null;
+  name: string;
+  alphaAcid: number; // percentage
+  amount: number; // ounces
+  type: HopType;
+  boilTime: number; // minutes
+  use: StepAdded;
+}
+
+export interface IBUResults {
+  totalIBU: number;
+  hopContributions: Array<{
+    hopName: string;
+    ibu: number;
+  }>;
 }
 
 export interface Ingredient {

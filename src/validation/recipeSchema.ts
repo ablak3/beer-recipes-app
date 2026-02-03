@@ -2,7 +2,8 @@ import * as yup from 'yup';
 import { 
   Unit, 
   IngredientType,
-  StepAdded 
+  StepAdded,
+  HopType
 } from '../types';
 
 /**
@@ -13,6 +14,19 @@ export const grainSchema = yup.object({
   name: yup.string().required("Grain name is required"),
   weight: yup.number().required("Weight is required"),
   lovibond: yup.number().required("Lovibond is required"),
+});
+
+/**
+ * Hop Schema
+ */
+export const hopSchema = yup.object({
+  id: yup.string().nullable(),
+  name: yup.string().required("Hop name is required"),
+  alphaAcid: yup.number().min(0).max(25).required("Alpha acid is required"),
+  amount: yup.number().min(0).required("Amount is required"),
+  type: yup.mixed<HopType>().oneOf(Object.values(HopType)).required(),
+  boilTime: yup.number().min(0).max(120).required("Boil time is required"),
+  use: yup.mixed<StepAdded>().oneOf(Object.values(StepAdded)).required(),
 });
 
 /**
@@ -131,6 +145,37 @@ export const commentSchema = yup.object({
 });
 
 /**
+ * ABV Inputs Schema
+ */
+export const abvInputsSchema = yup.object({
+  originalGravity: yup.number().min(1.000).max(1.200).required("Original gravity is required"),
+  finalGravity: yup.number().min(0.990).max(1.100).required("Final gravity is required"),
+  mashEfficiency: yup.number().min(0).max(100).required("Mash efficiency is required"),
+});
+
+/**
+ * ABV Results Schema
+ */
+export const abvResultsSchema = yup.object({
+  abv: yup.number().required(),
+  calories: yup.number().required(),
+  attenuation: yup.number().required(),
+});
+
+/**
+ * IBU Results Schema
+ */
+export const ibuResultsSchema = yup.object({
+  totalIBU: yup.number().required(),
+  hopContributions: yup.array().of(
+    yup.object({
+      hopName: yup.string().required(),
+      ibu: yup.number().required(),
+    })
+  ).default([]),
+});
+
+/**
  * Recipe Schema
  */
 export const recipeSchema = yup.object({
@@ -138,11 +183,15 @@ export const recipeSchema = yup.object({
   title: yup.string().required("Title is required"),
   description: yup.string().required("Description is required"),
   grainBill: yup.array().of(grainSchema).default([]).min(1, "At least one grain is required"),
+  hops: yup.array().of(hopSchema).default([]),
   brewInABagSettings: brewInABagSettingsSchema.required(),
   brewInABagResults: brewInABagResultsSchema.required(),
   waterChemistryInputs: waterChemistryInputsSchema.required(),
   waterChemistryResults: waterChemistryResultsSchema.required(),
   waterAdjustments: waterAdjustmentsSchema.required(),
+  abvInputs: abvInputsSchema.required(),
+  abvResults: abvResultsSchema.required(),
+  ibuResults: ibuResultsSchema.required(),
   ingredients: yup.array().of(ingredientSchema).default([]).min(1, "At least one ingredient required"),
   instructions: yup.string().required("Instructions are required"),
   author: yup.string().required("Author is required"),

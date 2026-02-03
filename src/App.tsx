@@ -14,6 +14,8 @@ import Navbar from "./components/Navbar";
 import NotFound from "./pages/NotFound";
 import RecipeStepWaterChemistry from "./pages/create-recipe/RecipeStepWaterChemistry";
 import RecipeStepGrainBill from "./pages/create-recipe/RecipeStepGrainBill";
+import RecipeStepABV from "./pages/create-recipe/RecipeStepABV";
+import RecipeStepIBU from "./pages/create-recipe/RecipeStepIBU";
 
 function App() {
   return (
@@ -53,6 +55,14 @@ function App() {
               <Route 
                 path="/create/waterChemistrySettings" 
                 element={<RecipeStepWaterChemistry />} 
+              />
+              <Route 
+                path="/create/abvSettings" 
+                element={<RecipeStepABV />} 
+              />
+              <Route 
+                path="/create/ibuSettings" 
+                element={<RecipeStepIBU />} 
               />
               <Route
                 path="/create/ingredients"

@@ -26,7 +26,9 @@ const steps = [
   { label: "Grain Bill", path: "/create/grainBillSettings" },
   { label: "Brew Settings", path: "/create/brewSettings" },
   { label: "Water Chemistry Settings", path: "/create/waterChemistrySettings" },
-  { label: "Ingredients", path: "/create/ingredients" },
+  { label: "ABV Settings", path: "/create/abvSettings" },
+  { label: "IBU Settings", path: "/create/ibuSettings" },
+  { label: "Misc Ingredients", path: "/create/ingredients" },
 ];
 
 export default function CreateRecipeLayout() {

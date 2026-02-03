@@ -1,5 +1,5 @@
 import React, { createContext, useState, useCallback } from 'react';
-import { Recipe, Grain, Ingredient, WaterChemistryResults } from '../types';
+import { Recipe, Grain, Ingredient, WaterChemistryResults, ABVInputs, ABVResults, IBUResults, Hop } from '../types';
 import { defaultRecipeValues } from '../constants/defaultRecipeValues';
 
 interface RecipeContextType {
@@ -23,12 +23,23 @@ interface RecipeContextType {
   removeGrain: (index: number) => void;
   getGrainBill: () => Grain[];
   getGrainBillWeight: () => number;
-
+  
+  // Hops
+  addHop: (hop: Hop) => void;
+  updateHop: (index: number, hop: Hop) => void;
+  removeHop: (index: number) => void;
   
   // Ingredients
   addIngredient: (ingredient: Ingredient) => void;
   updateIngredient: (index: number, ingredient: Ingredient) => void;
   removeIngredient: (index: number) => void;
+  
+  // ABV
+  updateABVInput: (field: keyof ABVInputs, value: number) => void;
+  updateABVResults: (results: ABVResults) => void;
+  
+  // IBU
+  updateIBUResults: (results: IBUResults) => void;
   
   // Reset & Load
   resetRecipe: () => void;
@@ -84,7 +95,7 @@ export function RecipeProvider({ children }: { children: React.ReactNode }) {
           };
         }
       } else {
-        // Direct field like "lacticAcidML" or "grainBill"
+        // Direct field like "lacticAcidML"
         (newInputs as any)[path] = value;
       }
       
@@ -104,16 +115,14 @@ export function RecipeProvider({ children }: { children: React.ReactNode }) {
     setRecipe(prev => ({
       ...prev,
       grainBill: [...prev.grainBill, grain]
-      }
-    ));
+    }));
   }, []);
 
   const updateGrain = useCallback((index: number, grain: Grain) => {
     setRecipe(prev => ({
       ...prev,
       grainBill: prev.grainBill.map((g, i) => i === index ? grain : g)
-      }
-    ));
+    }));
   }, []);
 
   const removeGrain = useCallback((index: number) => {
@@ -124,7 +133,7 @@ export function RecipeProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const getGrainBill = useCallback(() => {
-    return recipe.grainBill
+    return recipe.grainBill;
   }, [recipe.grainBill]);
 
   const getGrainBillWeight = useCallback(() => {
@@ -134,6 +143,27 @@ export function RecipeProvider({ children }: { children: React.ReactNode }) {
     );
   }, [recipe.grainBill]);
 
+  // Hops
+  const addHop = useCallback((hop: Hop) => {
+    setRecipe(prev => ({
+      ...prev,
+      hops: [...prev.hops, hop]
+    }));
+  }, []);
+
+  const updateHop = useCallback((index: number, hop: Hop) => {
+    setRecipe(prev => ({
+      ...prev,
+      hops: prev.hops.map((h, i) => i === index ? hop : h)
+    }));
+  }, []);
+
+  const removeHop = useCallback((index: number) => {
+    setRecipe(prev => ({
+      ...prev,
+      hops: prev.hops.filter((_, i) => i !== index)
+    }));
+  }, []);
 
   // Ingredients
   const addIngredient = useCallback((ingredient: Ingredient) => {
@@ -157,14 +187,40 @@ export function RecipeProvider({ children }: { children: React.ReactNode }) {
     }));
   }, []);
 
-  // Water Additions
+  // Water Adjustments
   const updateWaterAdjustments = useCallback((field: keyof Recipe['waterAdjustments'], value: number) => {
     setRecipe(prev => ({
       ...prev,
-      waterAdditions: {
+      waterAdjustments: {
         ...prev.waterAdjustments,
         [field]: value
       }
+    }));
+  }, []);
+
+  // ABV
+  const updateABVInput = useCallback((field: keyof ABVInputs, value: number) => {
+    setRecipe(prev => ({
+      ...prev,
+      abvInputs: {
+        ...prev.abvInputs,
+        [field]: value
+      }
+    }));
+  }, []);
+
+  const updateABVResults = useCallback((results: ABVResults) => {
+    setRecipe(prev => ({
+      ...prev,
+      abvResults: results
+    }));
+  }, []);
+
+  // IBU
+  const updateIBUResults = useCallback((results: IBUResults) => {
+    setRecipe(prev => ({
+      ...prev,
+      ibuResults: results
     }));
   }, []);
 
@@ -189,10 +245,16 @@ export function RecipeProvider({ children }: { children: React.ReactNode }) {
     removeGrain,
     getGrainBill,
     getGrainBillWeight,
+    addHop,
+    updateHop,
+    removeHop,
     addIngredient,
     updateIngredient,
     removeIngredient,
     updateWaterAdjustments,
+    updateABVInput,
+    updateABVResults,
+    updateIBUResults,
     resetRecipe,
     loadRecipe,
   };
