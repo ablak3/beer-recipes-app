@@ -7,14 +7,15 @@ import ResultCard from "../ResultCard";
 import { roundTo } from "../numberUtils";
 
 interface BiabResultsProps {
+  grainBillWeight: number;
   biabValues: BrewInABagSettings;
 }
 
-export default function BiabResults({ biabValues }: BiabResultsProps) {
+export default function BiabResults({ grainBillWeight, biabValues }: BiabResultsProps) {
   const { setValue, getValues } = useFormContext();
 
   // Calculate results when BIAB inputs change
-  const results = useBiabCalculator(biabValues);
+  const results = useBiabCalculator({grainBillWeight, ...biabValues});
 
   // Prevent redundant form updates
   const prevResultsRef = useRef<typeof results | null>(null);

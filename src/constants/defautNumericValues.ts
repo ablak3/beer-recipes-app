@@ -7,8 +7,13 @@ export type Field<T> = {
   options?: Unit[];
 };
 
-export const brewInABagNumericFields: Field<RecipeFormValues["brewInABagSettings"]>[] = [
-  { name: "grainBill", label: "Grain Bill" },
+/* =======================
+   BREW IN A BAG
+======================= */
+
+export const brewInABagNumericFields: Field<
+  RecipeFormValues["brewInABagSettings"]
+>[] = [
   { name: "grainTemp", label: "Grain Temperature" },
   { name: "batchSize", label: "Batch Size" },
   { name: "mashTemp", label: "Mash Temp" },
@@ -16,59 +21,54 @@ export const brewInABagNumericFields: Field<RecipeFormValues["brewInABagSettings
   { name: "kettleSize", label: "Kettle Size" },
   { name: "trub", label: "Trub" },
   { name: "boilOffRate", label: "Boil Off Rate" },
-  { name: "grainAbsorptionRate", label: "Grain Absorption Rate" }
+  { name: "grainAbsorptionRate", label: "Grain Absorption Rate" },
 ];
 
-export const brewInABagOptionsFields: Field<RecipeFormValues["brewInABagSettings"]>[] = [
-    { name: "grainBillUnit", label: "Grain Bill Unit", options: Object.values(Unit),},
-    { name: "tempUnit", label: "Temp Unit", options: Object.values(Unit) },
-    { name: "timeUnit", label: "Time Unit", options: Object.values(Unit) },
-    { name: "liquidUnit", label: "Liquid Unit", options: Object.values(Unit) },
+export const brewInABagOptionsFields: Field<
+  RecipeFormValues["brewInABagSettings"]
+>[] = [
+  { name: "tempUnit", label: "Temp Unit", options: Object.values(Unit) },
+  { name: "timeUnit", label: "Time Unit", options: Object.values(Unit) },
+  { name: "liquidUnit", label: "Liquid Unit", options: Object.values(Unit) },
 ];
+
+/* =======================
+   WATER CHEMISTRY
+======================= */
 
 export const startingWaterChemistryNumericFields: Field<
-  RecipeFormValues["waterChemistryInputs"]
+  RecipeFormValues["waterChemistryInputs"]["startingWaterProfile"]
 >[] = [
-  { name: "startingCalcium", label: "Ca" },
-  { name: "startingMagnesium", label: "Mg" },
-  { name: "startingSodium", label: "Na" },
-  { name: "startingChloride", label: "Cl" },
-  { name: "startingSulfate", label: "SO₄" },
-  { name: "startingBicarbonate", label: "HCO₃" },
-  { name: "roPercentage", label: "RO %" }
+  { name: "startingCalcium", label: "Calcium (Ca)" },
+  { name: "startingMagnesium", label: "Magnesium (Mg)" },
+  { name: "startingSodium", label: "Sodium (Na)" },
+  { name: "startingChloride", label: "Chloride (Cl)" },
+  { name: "startingSulfate", label: "Sulfate (SO₄)" },
+  { name: "startingBicarbonate", label: "Bicarbonate (HCO₃)" },
 ];
 
-export const waterVolumes: Field<
-  RecipeFormValues["waterVolumes"]
+export const waterVolumesFields: Field<
+  RecipeFormValues["waterChemistryInputs"]["waterVolumes"]
 >[] = [
-  { name: "mashWater", label: "Mash Water (gal)" },
-  { name: "spargeWater", label: "Sparge Water (gal)" }
+  { name: "mashWaterVolume", label: "Mash Water Volume" },
+  { name: "spargeWaterVolume", label: "Sparge Water Volume" },
+  { name: "percentDistilledRO", label: "RO %" },
 ];
 
-export const mashSaltAdditions: Field<
-  RecipeFormValues["mashSaltAdditions"]
+export const waterAdjustmentSaltsFields: Field<
+  RecipeFormValues["waterAdjustments"]
 >[] = [
-  { name: "mashGypsumCaSO4", label: "Gypsum" },
-  { name: "mashCalciumChlorideCaCl2", label: "Calcium Chloride" },
-  { name: "mashEpsomSaltMgSO4", label: "Epsom Salt" },
-  { name: "mashTableSaltNaCl", label: "Table Salt" },
-  { name: "mashBakingSodaNaHCO3", label: "Baking Soda" },
-  { name: "mashChalkCaCO3", label: "Chalk" },
+  { name: "gypsum", label: "Gypsum (CaSO₄)" },
+  { name: "calciumChloride", label: "Calcium Chloride (CaCl₂)" },
+  { name: "epsomSalt", label: "Epsom Salt (MgSO₄)" },
+  { name: "slakedLime", label: "Slaked Lime (Ca(OH)₂)" },
+  { name: "BakingSoda", label: "Baking Soda (NaHCO₃)" },
+  { name: "chalk", label: "Chalk (CaCO₃)" },
 ];
 
-export const spargeSaltAdditions: Field<
-  RecipeFormValues["spargeSaltAdditions"]
+export const waterAdjustmentAcidFields: Field<
+  RecipeFormValues["waterAdjustments"]
 >[] = [
-  { name: "spargeGypsumCaSO4", label: "Gypsum" },
-  { name: "spargeCalciumChlorideCaCl2", label: "Calcium Chloride" },
-  { name: "spargeEpsomSaltMgSO4", label: "Epsom Salt" },
-  { name: "spargeTableSaltNaCl", label: "Table Salt" },
-  { name: "spargeBakingSodaNaHCO3", label: "Baking Soda" },
-  { name: "spargeChalkCaCO3", label: "Chalk" },
+  { name: "lacticAcid", label: "Lactic Acid (88%)" },
 ];
 
-export const acidAdditions: Field<
-  RecipeFormValues["acidAdditions"]
->[] = [
-  { name: "lacticAcid", label: "Lactic Acid (mL)" }
-];

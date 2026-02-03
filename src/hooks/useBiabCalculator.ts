@@ -2,11 +2,11 @@ import { useEffect, useState, useDeferredValue, useMemo } from "react";
 import { Unit } from "../types/index";
 
 type UseBiabCalculatorProps = {
+  grainBillWeight: number;
   tempUnit: Unit;
   liquidUnit: Unit;
   grainBillUnit: Unit;
   timeUnit: Unit;
-  grainBill: number;
   batchSize: number;
   mashTemp: number;
   boilTime: number;
@@ -27,11 +27,11 @@ type UseBiabCalculatorProps = {
  * All calculations done in the user's selected units
  */
 export function useBiabCalculator({
+  grainBillWeight,
   tempUnit,
   liquidUnit,
   grainBillUnit,
   timeUnit,
-  grainBill,
   batchSize,
   mashTemp,
   boilTime,
@@ -43,7 +43,7 @@ export function useBiabCalculator({
 }: UseBiabCalculatorProps) {
   // Defer values to reduce calculation frequency
   const deferredInputs = useDeferredValue({
-    grainBill,
+    grainBillWeight,
     batchSize,
     mashTemp,
     boilTime,
@@ -68,7 +68,7 @@ export function useBiabCalculator({
   // --- Perform calculations only when deferred inputs change ---
   useEffect(() => {
     const {
-      grainBill: l,
+      grainBillWeight: l,
       batchSize: b,
       mashTemp: j,
       boilTime: xRaw,
@@ -114,7 +114,7 @@ export function useBiabCalculator({
     // Check if kettle size is exceeded
     const kettleSizeExceeded = k !== undefined && v > k;
     const kettleSizeWarning = kettleSizeExceeded
-      ? `Warning: Total mash volume (${v.toFixed(2)} ${liquidUnit}) exceeds kettle size (${k!.toFixed(2)} ${liquidUnit})`
+      ? `Warning: Total mash volume (${v} ${liquidUnit}) exceeds kettle size (${k!} ${liquidUnit})`
       : null;
 
     // Calculate PreBoil Wort (water minus grain absorption)

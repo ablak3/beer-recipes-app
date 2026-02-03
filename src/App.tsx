@@ -13,6 +13,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
 import NotFound from "./pages/NotFound";
 import RecipeStepWaterChemistry from "./pages/create-recipe/RecipeStepWaterChemistry";
+import RecipeStepGrainBill from "./pages/create-recipe/RecipeStepGrainBill";
 
 function App() {
   return (
@@ -40,6 +41,10 @@ function App() {
               <Route 
                 path="/create/details" 
                 element={<RecipeStepBasic />} 
+              />
+              <Route 
+                path="/create/grainBillSettings" 
+                element={<RecipeStepGrainBill />} 
               />
               <Route 
                 path="/create/brewSettings" 

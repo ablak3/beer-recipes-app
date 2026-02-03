@@ -2,12 +2,12 @@ export interface Recipe {
   id: string | null;
   title: string;
   description: string;
+  grainBill: Grain[];
   brewInABagSettings: BrewInABagSettings;
   brewInABagResults: BrewInABagResults;
-  beforeWaterProfile: BeforeWaterProfile;
-  afterWaterProfile: AfterWaterProfile;
-  grains: Grain[];
-  waterAdditions: WaterAdditions;
+  waterChemistryInputs: WaterChemistryInputs;
+  waterChemistryResults: WaterChemistryResults;
+  waterAdjustments: WaterAdjustments;
   ingredients: Ingredient[];
   instructions: string;
   author: string;
@@ -27,46 +27,12 @@ export enum Unit {
   PartsPerMillion = "PartsPerMillion",
 }
 
-export interface BeforeWaterProfile {
-  id: string | null;
-  solidUnit:Unit;
-  calcium: number;
-  magnesium: number;
-  sodium: number;
-  chloride: number;
-  sulfate: number;
-  alkalinity: number;
-}
-
-export interface AfterWaterProfile {
-  id: string | null;
-  solidUnit: Unit;
-  calcium: number;
-  magnesium: number;
-  sodium: number;
-  chloride: number;
-}
-
-export interface WaterAdditions {
-  id: string | null;
-  solidUnit: Unit;
-  liquidUnit: Unit;
-  gypsum: number;
-  calciumChloride: number;
-  epsomSalt: number;
-  slakedLime: number;
-  BakingSoda: number;
-  chalk: number;
-  lacticAcid: number;
-}
-
 export interface BrewInABagSettings {
   id: string | null;
   grainBillUnit: Unit;
   tempUnit: Unit;
   timeUnit: Unit;
   liquidUnit: Unit;
-  grainBill: number;
   grainTemp: number;
   batchSize: number;
   mashTemp: number;
@@ -93,7 +59,7 @@ export interface Grain {
   lovibond: number;
 }
 
-export interface WaterChemistryInputs {
+export interface startingWaterProfile {
   // Starting water profile (ppm)
   startingCalcium: number;
   startingMagnesium: number;
@@ -101,55 +67,35 @@ export interface WaterChemistryInputs {
   startingChloride: number;
   startingSulfate: number;
   startingBicarbonate: number;
-  
+}
+
+export interface waterVolumes {
   // Water volumes (gallons)
   mashWaterVolume: number;
   spargeWaterVolume: number;
-  
-  // Grain bill
-  grainBill: Grain[];
-  
-  // Salt additions to mash (grams)
-  mashGypsumCaSO4: number;
-  mashCalciumChlorideCaCl2: number;
-  mashEpsomSaltMgSO4: number;
-  mashTableSaltNaCl: number;
-  mashBakingSodaNaHCO3: number;
-  mashChalkCaCO3: number;
-  
-  // Salt additions to sparge (grams)
-  spargeGypsumCaSO4: number;
-  spargeCalciumChlorideCaCl2: number;
-  spargeEpsomSaltMgSO4: number;
-  spargeTableSaltNaCl: number;
-  spargeBakingSodaNaHCO3: number;
-  spargeChalkCaCO3: number;
-  
-  // Acid additions
+  percentDistilledRO: number;
+}
+
+export interface WaterChemistryInputs {
+  startingWaterProfile: startingWaterProfile;
+  waterVolumes: waterVolumes;
   lacticAcidML: number;
-  
-  // RO/Distilled water percentage
-  roPercentage: number;
+}
+
+export interface WaterAdjustments {
+  id: string | null;
+  solidUnit: Unit;
+  liquidUnit: Unit;
+  gypsum: number;
+  calciumChloride: number;
+  epsomSalt: number;
+  slakedLime: number;
+  BakingSoda: number;
+  chalk: number;
+  lacticAcid: number;
 }
 
 export interface WaterChemistryResults {
-  // Mash water profile
-  mashCalcium: number;
-  mashMagnesium: number;
-  mashSodium: number;
-  mashChloride: number;
-  mashSulfate: number;
-  mashBicarbonate: number;
-  
-  // Sparge water profile
-  spargeCalcium: number;
-  spargeMagnesium: number;
-  spargeSodium: number;
-  spargeChloride: number;
-  spargeSulfate: number;
-  spargeBicarbonate: number;
-  
-  // Combined water profile
   totalCalcium: number;
   totalMagnesium: number;
   totalSodium: number;

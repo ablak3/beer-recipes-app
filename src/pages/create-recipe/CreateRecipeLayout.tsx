@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   Breadcrumbs,
@@ -11,13 +11,19 @@ import {
 } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { recipeSchema, RecipeFormValues } from "../../validation/recipeSchema";
+import {
+  recipeSchema,
+  RecipeFormValues,
+} from "../../validation/recipeSchema";
 import { defaultRecipeValues } from "../../constants/defaultRecipeValues";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
-import { RecipeProvider } from '../../context/RecipeContext';
+import { RecipeProvider } from "../../context/RecipeContext";
+
+const STORAGE_KEY = "recipeForm";
 
 const steps = [
   { label: "Basic Info", path: "/create" },
+  { label: "Grain Bill", path: "/create/grainBillSettings" },
   { label: "Brew Settings", path: "/create/brewSettings" },
   { label: "Water Chemistry Settings", path: "/create/waterChemistrySettings" },
   { label: "Ingredients", path: "/create/ingredients" },
@@ -30,18 +36,44 @@ export default function CreateRecipeLayout() {
     mode: "onChange",
   });
 
+  const { watch } = methods;
+
   const navigate = useNavigate();
   const location = useLocation();
-  const currentStepIndex = steps.findIndex((s) => s.path === location.pathname);
+  const currentStepIndex = steps.findIndex(
+    (step) => step.path === location.pathname
+  );
 
-  // Autosave and restore
-  const [formData, setFormData] = useState(defaultRecipeValues);
-  const handleLoad = useCallback((saved: typeof formData) => {
+  /**
+   * -----------------------------
+   * Autosave / Restore
+   * -----------------------------
+   */
+  const [formData, setFormData] =
+    useState<RecipeFormValues>(defaultRecipeValues);
+
+  const handleLoad = useCallback((saved: RecipeFormValues) => {
+    methods.reset(saved);
     setFormData(saved);
-  }, []);
-  useLocalStorage("recipeForm", formData, handleLoad);
+  }, [methods]);
 
-  const progress = ((currentStepIndex + 1) / steps.length) * 100;
+  useLocalStorage(STORAGE_KEY, formData, handleLoad);
+
+  // Sync RHF → autosave state
+  useEffect(() => {
+    const subscription = watch((value) => {
+      setFormData(value as RecipeFormValues);
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
+  /**
+   * -----------------------------
+   * Navigation helpers
+   * -----------------------------
+   */
+  const progress =
+    ((currentStepIndex + 1) / steps.length) * 100;
 
   const goNext = () => {
     if (currentStepIndex < steps.length - 1) {
@@ -63,7 +95,7 @@ export default function CreateRecipeLayout() {
             Create a New Recipe
           </Typography>
 
-          {/* Progress bar */}
+          {/* Progress */}
           <Box sx={{ mb: 3 }}>
             <LinearProgress
               variant="determinate"
@@ -81,7 +113,11 @@ export default function CreateRecipeLayout() {
               <Link
                 key={step.path}
                 underline={idx === currentStepIndex ? "none" : "hover"}
-                color={idx === currentStepIndex ? "text.primary" : "inherit"}
+                color={
+                  idx === currentStepIndex
+                    ? "text.primary"
+                    : "inherit"
+                }
                 onClick={() => navigate(step.path)}
                 sx={{ cursor: "pointer" }}
               >
@@ -90,11 +126,17 @@ export default function CreateRecipeLayout() {
             ))}
           </Breadcrumbs>
 
-          {/* Render current page */}
+          {/* Current step */}
           <Outlet />
 
           {/* Navigation buttons */}
-          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              mt: 4,
+            }}
+          >
             <Button
               variant="outlined"
               disabled={currentStepIndex === 0}
@@ -113,7 +155,7 @@ export default function CreateRecipeLayout() {
                 color="primary"
                 onClick={methods.handleSubmit((data) => {
                   console.log("✅ Final recipe saved:", data);
-                  localStorage.removeItem("createRecipeDraft");
+                  localStorage.removeItem(STORAGE_KEY);
                 })}
               >
                 Save Recipe

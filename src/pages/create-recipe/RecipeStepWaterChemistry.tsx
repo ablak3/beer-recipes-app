@@ -2,26 +2,27 @@ import { useEffect } from "react";
 import { Stack } from "@mui/material";
 import { useRecipe } from "../../hooks/useRecipe";
 import { useWaterChemistry } from "../../hooks/useWaterChemistry";
-import Section from "../../components/Section";
-import GrainBillSection from "../../components/water-chemistry/GrainBillSection";
 import WaterProfileResults from "../../components/water-chemistry/WaterProfileResults";
-import Inputs from "../../components/Inputs"
-import {
+import Section from "../../components/Section";
+import Inputs from "../../components/ResultInputs";
+import { 
+  waterVolumesFields, 
   startingWaterChemistryNumericFields,
-  waterVolumes,
-  acidAdditions,
-  mashSaltAdditions,
-  spargeSaltAdditions,
+  waterAdjustmentSaltsFields,
+  waterAdjustmentAcidFields
 } from "../../constants/defautNumericValues";
 
 export default function RecipeStepWaterChemistry() {
   const { 
-    waterChemistryInputs, 
-    updateWaterChemistryInput,
+    recipe,
     updateWaterChemistryResults,
+    getGrainBill,
   } = useRecipe();
   
-  const results = useWaterChemistry(waterChemistryInputs);
+  const grainBill = getGrainBill();
+  const waterChemistryInputs = recipe.waterChemistryInputs;
+  const waterAdjustments = recipe.waterAdjustments;
+  const results = useWaterChemistry(waterChemistryInputs, waterAdjustments, grainBill);
 
   // Update results in context whenever they change
   useEffect(() => {
@@ -34,56 +35,33 @@ export default function RecipeStepWaterChemistry() {
         <Section title="Starting Water Profile (ppm)">
           <Inputs
             fields={startingWaterChemistryNumericFields}
-            basePath="waterChemistryInputs"
+            basePath="waterChemistryInputs.startingWaterProfile"
           />
         </Section>
-
         <Section title="Water Volumes">
-          <Inputs fields={waterVolumes} basePath="waterVolumes" />
+          <Inputs
+            fields={waterVolumesFields}
+            basePath="waterChemistryInputs.waterVolumes"
+          />
         </Section>
-
-        <Section title="Grain Bill">
-          <GrainBillSection
-          grainBill={waterChemistryInputs.grainBill}
-          setInputs={(updater) => {
-            const newInputs = typeof updater === 'function' 
-              ? updater(waterChemistryInputs) 
-              : updater;
-            
-            Object.entries(newInputs).forEach(([key, value]) => {
-              updateWaterChemistryInput(key as any, value);
-            });
-          }}
-        />
+        <Section title="Water Adjustments">
+          <Section title="Salt Additions (grams)">
+            <Inputs
+              fields={waterAdjustmentSaltsFields}
+              basePath="waterAdjustments"
+            />
+          </Section>
+          <Section title="Acid Additions (mL)">
+            <Inputs
+              fields={waterAdjustmentAcidFields}
+              basePath="waterAdjustments"
+            />
+          </Section>
+        </Section>
+        <Section title="Water Chemistry Results">
+          <WaterProfileResults results={results} />
         </Section>
       </Section>
-
-      {/* COLUMN 2 */}
-        <div className="space-y-6">
-          {waterChemistryInputs.mashWaterVolume > 0 && (
-            <Section title="Mash Salt Additions (g)" columns={3}>
-              <Inputs
-                fields={mashSaltAdditions}
-                basePath="mashSaltAdditions"
-              />
-            </Section>
-          )}
-
-          {waterChemistryInputs.spargeWaterVolume > 0 && (
-            <Section title="Sparge Salt Additions (g)" columns={3}>
-              <Inputs
-                fields={spargeSaltAdditions}
-                basePath="spargeSaltAdditions"
-              />
-            </Section>
-          )}
-
-          <Section title="Acid Additions" columns={2}>
-            <Inputs fields={acidAdditions} basePath="acidAdditions" />
-          </Section>
-        </div>
-
-      <WaterProfileResults results={results} />
     </Stack>
   );
 }

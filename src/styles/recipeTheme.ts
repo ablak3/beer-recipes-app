@@ -68,11 +68,30 @@ const recipeTheme = createTheme({
         size: "small",
         variant: "outlined",
       },
+      styleOverrides: {
+        root: {
+          "& .MuiInputBase-root": {
+            transition: "all 0.2s ease",
+          },
+          "& .MuiInputBase-input": {
+            fontWeight: 500,
+          },
+        },
+      },
     },
 
     MuiGrid: {
       defaultProps: {
         spacing: 2,
+      },
+    },
+
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          marginLeft: 0,
+          marginTop: 4,
+        },
       },
     },
   },

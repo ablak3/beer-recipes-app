@@ -1,36 +1,36 @@
 import React, { createContext, useState, useCallback } from 'react';
-import { Recipe, Grain, Ingredient, WaterChemistryInputs, WaterChemistryResults } from '../types';
-import { defaultRecipeValues, defaultWaterChemistryInputs } from '../constants/defaultRecipeValues';
+import { Recipe, Grain, Ingredient, WaterChemistryResults } from '../types';
+import { defaultRecipeValues } from '../constants/defaultRecipeValues';
 
 interface RecipeContextType {
   recipe: Recipe;
   
   // Basic Info
-  updateBasicInfo: (field: 'title' | 'description' | 'instructions', value: string) => void;
+  updateBasicInfo: (field: 'title' | 'description' | 'instructions' | 'author', value: string) => void;
   
   // BIAB Settings
   updateBiabSetting: (field: keyof Recipe['brewInABagSettings'], value: any) => void;
   updateBiabResults: (results: Recipe['brewInABagResults']) => void;
   
   // Water Chemistry
-  waterChemistryInputs: WaterChemistryInputs;
-  updateWaterChemistryInput: (field: keyof WaterChemistryInputs, value: any) => void;
+  updateWaterChemistryInput: (path: string, value: any) => void;
   updateWaterChemistryResults: (results: WaterChemistryResults) => void;
+  updateWaterAdjustments: (field: keyof Recipe['waterAdjustments'], value: number) => void;
   
   // Grains
   addGrain: (grain: Grain) => void;
   updateGrain: (index: number, grain: Grain) => void;
   removeGrain: (index: number) => void;
+  getGrainBill: () => Grain[];
+  getGrainBillWeight: () => number;
+
   
   // Ingredients
   addIngredient: (ingredient: Ingredient) => void;
   updateIngredient: (index: number, ingredient: Ingredient) => void;
   removeIngredient: (index: number) => void;
   
-  // Water Additions
-  updateWaterAddition: (field: keyof Recipe['waterAdditions'], value: number) => void;
-  
-  // Reset
+  // Reset & Load
   resetRecipe: () => void;
   loadRecipe: (recipe: Recipe) => void;
 }
@@ -39,10 +39,9 @@ export const RecipeContext = createContext<RecipeContextType | undefined>(undefi
 
 export function RecipeProvider({ children }: { children: React.ReactNode }) {
   const [recipe, setRecipe] = useState<Recipe>(defaultRecipeValues);
-  const [waterChemistryInputs, setWaterChemistryInputs] = useState<WaterChemistryInputs>(defaultWaterChemistryInputs);
 
   // Basic Info
-  const updateBasicInfo = useCallback((field: 'title' | 'description' | 'instructions', value: string) => {
+  const updateBasicInfo = useCallback((field: 'title' | 'description' | 'instructions' | 'author', value: string) => {
     setRecipe(prev => ({ ...prev, [field]: value }));
   }, []);
 
@@ -64,70 +63,77 @@ export function RecipeProvider({ children }: { children: React.ReactNode }) {
     }));
   }, []);
 
-  // Water Chemistry Inputs
-  const updateWaterChemistryInput = useCallback((field: keyof WaterChemistryInputs, value: any) => {
-    setWaterChemistryInputs(prev => ({ ...prev, [field]: value }));
+  // Water Chemistry Inputs - handles nested paths
+  const updateWaterChemistryInput = useCallback((path: string, value: any) => {
+    setRecipe(prev => {
+      const newInputs = { ...prev.waterChemistryInputs };
+      
+      // Handle nested paths like "startingWaterProfile.startingCalcium"
+      const parts = path.split('.');
+      if (parts.length === 2) {
+        const [parent, field] = parts;
+        if (parent === 'startingWaterProfile') {
+          newInputs.startingWaterProfile = {
+            ...newInputs.startingWaterProfile,
+            [field]: value
+          };
+        } else if (parent === 'waterVolumes') {
+          newInputs.waterVolumes = {
+            ...newInputs.waterVolumes,
+            [field]: value
+          };
+        }
+      } else {
+        // Direct field like "lacticAcidML" or "grainBill"
+        (newInputs as any)[path] = value;
+      }
+      
+      return { ...prev, waterChemistryInputs: newInputs };
+    });
   }, []);
 
   const updateWaterChemistryResults = useCallback((results: WaterChemistryResults) => {
-    // Map water chemistry results to recipe water profiles
     setRecipe(prev => ({
       ...prev,
-      beforeWaterProfile: {
-        id: prev.beforeWaterProfile.id,
-        solidUnit: prev.beforeWaterProfile.solidUnit,
-        calcium: waterChemistryInputs.startingCalcium,
-        magnesium: waterChemistryInputs.startingMagnesium,
-        sodium: waterChemistryInputs.startingSodium,
-        chloride: waterChemistryInputs.startingChloride,
-        sulfate: waterChemistryInputs.startingSulfate,
-        alkalinity: waterChemistryInputs.startingBicarbonate,
-      },
-      afterWaterProfile: {
-        id: prev.afterWaterProfile.id,
-        solidUnit: prev.afterWaterProfile.solidUnit,
-        calcium: results.totalCalcium,
-        magnesium: results.totalMagnesium,
-        sodium: results.totalSodium,
-        chloride: results.totalChloride,
-        sulfate: results.totalSulfate,
-      }
+      waterChemistryResults: results
     }));
-  }, [waterChemistryInputs]);
+  }, []);
 
   // Grains
   const addGrain = useCallback((grain: Grain) => {
     setRecipe(prev => ({
       ...prev,
-      grains: [...prev.grains, grain]
-    }));
-    setWaterChemistryInputs(prev => ({
-      ...prev,
       grainBill: [...prev.grainBill, grain]
-    }));
+      }
+    ));
   }, []);
 
   const updateGrain = useCallback((index: number, grain: Grain) => {
     setRecipe(prev => ({
       ...prev,
-      grains: prev.grains.map((g, i) => i === index ? grain : g)
-    }));
-    setWaterChemistryInputs(prev => ({
-      ...prev,
       grainBill: prev.grainBill.map((g, i) => i === index ? grain : g)
-    }));
+      }
+    ));
   }, []);
 
   const removeGrain = useCallback((index: number) => {
     setRecipe(prev => ({
       ...prev,
-      grains: prev.grains.filter((_, i) => i !== index)
-    }));
-    setWaterChemistryInputs(prev => ({
-      ...prev,
       grainBill: prev.grainBill.filter((_, i) => i !== index)
     }));
   }, []);
+
+  const getGrainBill = useCallback(() => {
+    return recipe.grainBill
+  }, [recipe.grainBill]);
+
+  const getGrainBillWeight = useCallback(() => {
+    return recipe.grainBill.reduce(
+      (total, grain) => total + (grain.weight || 0),
+      0
+    );
+  }, [recipe.grainBill]);
+
 
   // Ingredients
   const addIngredient = useCallback((ingredient: Ingredient) => {
@@ -152,67 +158,23 @@ export function RecipeProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   // Water Additions
-  const updateWaterAddition = useCallback((field: keyof Recipe['waterAdditions'], value: number) => {
+  const updateWaterAdjustments = useCallback((field: keyof Recipe['waterAdjustments'], value: number) => {
     setRecipe(prev => ({
       ...prev,
       waterAdditions: {
-        ...prev.waterAdditions,
+        ...prev.waterAdjustments,
         [field]: value
       }
     }));
-    
-    // Also update water chemistry inputs
-    const fieldMap: Record<string, keyof WaterChemistryInputs> = {
-      gypsum: 'mashGypsumCaSO4',
-      calciumChloride: 'mashCalciumChlorideCaCl2',
-      epsomSalt: 'mashEpsomSaltMgSO4',
-      bakingSoda: 'mashBakingSodaNaHCO3',
-      chalk: 'mashChalkCaCO3',
-      lacticAcid: 'lacticAcidML',
-    };
-    
-    if (fieldMap[field]) {
-      setWaterChemistryInputs(prev => ({
-        ...prev,
-        [fieldMap[field]]: value
-      }));
-    }
   }, []);
 
   // Reset & Load
   const resetRecipe = useCallback(() => {
     setRecipe(defaultRecipeValues);
-    setWaterChemistryInputs(defaultWaterChemistryInputs);
   }, []);
 
   const loadRecipe = useCallback((newRecipe: Recipe) => {
     setRecipe(newRecipe);
-    // Sync water chemistry inputs from loaded recipe
-    setWaterChemistryInputs({
-      startingCalcium: newRecipe.beforeWaterProfile.calcium,
-      startingMagnesium: newRecipe.beforeWaterProfile.magnesium,
-      startingSodium: newRecipe.beforeWaterProfile.sodium,
-      startingChloride: newRecipe.beforeWaterProfile.chloride,
-      startingSulfate: newRecipe.beforeWaterProfile.sulfate,
-      startingBicarbonate: newRecipe.beforeWaterProfile.alkalinity,
-      mashWaterVolume: 0, // You'll need to add these to Recipe type if needed
-      spargeWaterVolume: 0,
-      grainBill: newRecipe.grains,
-      mashGypsumCaSO4: newRecipe.waterAdditions.gypsum,
-      mashCalciumChlorideCaCl2: newRecipe.waterAdditions.calciumChloride,
-      mashEpsomSaltMgSO4: newRecipe.waterAdditions.epsomSalt,
-      mashTableSaltNaCl: 0,
-      mashBakingSodaNaHCO3: newRecipe.waterAdditions.BakingSoda,
-      mashChalkCaCO3: newRecipe.waterAdditions.chalk,
-      spargeGypsumCaSO4: 0,
-      spargeCalciumChlorideCaCl2: 0,
-      spargeEpsomSaltMgSO4: 0,
-      spargeTableSaltNaCl: 0,
-      spargeBakingSodaNaHCO3: 0,
-      spargeChalkCaCO3: 0,
-      lacticAcidML: newRecipe.waterAdditions.lacticAcid,
-      roPercentage: 0,
-    });
   }, []);
 
   const value: RecipeContextType = {
@@ -220,16 +182,17 @@ export function RecipeProvider({ children }: { children: React.ReactNode }) {
     updateBasicInfo,
     updateBiabSetting,
     updateBiabResults,
-    waterChemistryInputs,
     updateWaterChemistryInput,
     updateWaterChemistryResults,
     addGrain,
     updateGrain,
     removeGrain,
+    getGrainBill,
+    getGrainBillWeight,
     addIngredient,
     updateIngredient,
     removeIngredient,
-    updateWaterAddition,
+    updateWaterAdjustments,
     resetRecipe,
     loadRecipe,
   };
