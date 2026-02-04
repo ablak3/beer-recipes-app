@@ -6,24 +6,21 @@ import {
   MenuItem,
 } from "@mui/material";
 import { Unit } from "../../types";
+import { Field } from "../../constants/defaultFieldNames";
 
-interface BrewSettingRowProps {
-  field: {
-    key: string;
-    label: string;
-    type: "unit" | "number";
-  };
+interface BrewSettingRowProps<T extends object> {
+  field: Field<T>;
   value: any;
   onChange?: (value: any) => void;
   disabled?: boolean;
 }
 
-export default function BrewSettingRow({
+export default function BrewSettingRow<T extends object>({
   field,
   value,
   onChange,
   disabled,
-}: BrewSettingRowProps) {
+}: BrewSettingRowProps<T>) {
   const paperCardStyle = {
     elevation: 1,
     sx: {

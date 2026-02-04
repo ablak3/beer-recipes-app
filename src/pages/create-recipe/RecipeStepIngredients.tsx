@@ -1,10 +1,10 @@
-import Section from "../../components/Section";
 import IngredientsSection from "../../components/ingredients/IngredientsSection";
+import PageSection from "../../components/PageSection";
 
 export default function RecipeStepIngredients() {
   return (
-    <Section title="Ingredients">
+    <PageSection title="Misc Ingredients">
       <IngredientsSection />
-    </Section>
+    </PageSection>
   );
 }

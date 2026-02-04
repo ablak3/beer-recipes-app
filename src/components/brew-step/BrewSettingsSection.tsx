@@ -1,47 +1,30 @@
-import { Grid } from "@mui/material";
 import { useRecipe } from "../../hooks/useRecipe";
 import BrewSettingRow from "./BrewSettingRow";
+import { Field } from "../../constants/defaultFieldNames";
+import { BrewInABagSettings } from "../../types";
 
-const BREW_FIELDS = [
-  { key: "grainBillUnit", label: "Grain Bill Unit", type: "unit" },
-  { key: "tempUnit", label: "Temperature Unit", type: "unit" },
-  { key: "timeUnit", label: "Time Unit", type: "unit" },
-  { key: "liquidUnit", label: "Liquid Unit", type: "unit" },
+interface BrewSettingsSectionProps<T extends object> {
+  fields: Field<BrewInABagSettings>[];
+}
 
-  { key: "grainBill", label: "Grain Bill", type: "number" },
-  { key: "grainTemp", label: "Grain Temperature", type: "number" },
-  { key: "batchSize", label: "Batch Size", type: "number" },
-  { key: "mashTemp", label: "Mash Temperature", type: "number" },
-  { key: "boilTime", label: "Boil Time", type: "number" },
-  { key: "kettleSize", label: "Kettle Size", type: "number" },
-  { key: "trub", label: "Trub", type: "number" },
-  { key: "boilOffRate", label: "Boil Off Rate", type: "number" },
-  { key: "grainAbsorptionRate", label: "Grain Absorption Rate", type: "number" },
-] as const;
-
-export default function BrewSettingsSection() {
-  const { recipe, updateBiabSetting, getGrainBillWeight } = useRecipe();
+export default function BrewSettingsSection<T extends object>({
+  fields,
+}: BrewSettingsSectionProps<T>) {
+  const { recipe, updateBiabSetting } = useRecipe();
   const settings = recipe.brewInABagSettings;
 
   return (
-    <Grid container spacing={3}>
-      {BREW_FIELDS.map((field) => {
-        const isGrainBill = field.key === "grainBill";
-
-        return (
+    <>
+      {fields
+        .filter((field) => field.name !== "id")
+        .map((field) => (
           <BrewSettingRow
-            key={field.key}
+            key={String(field.name)}
             field={field}
-            value={isGrainBill ? getGrainBillWeight() : settings[field.key]}
-            disabled={isGrainBill}
-            onChange={
-              isGrainBill
-                ? undefined
-                : (value) => updateBiabSetting(field.key, value)
-            }
+            value={settings[field.name]}
+            onChange={(value) => updateBiabSetting(field.name, value)}
           />
-        );
-      })}
-    </Grid>
+        ))}
+    </>
   );
 }

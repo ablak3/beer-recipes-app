@@ -1,15 +1,12 @@
-import { Typography, TextField, Stack } from "@mui/material";
+import { TextField } from "@mui/material";
 import { useRecipe } from "../../hooks/useRecipe";
+import PageSection from "../../components/PageSection";
 
 export default function RecipeStepBasic() {
   const { recipe, updateBasicInfo } = useRecipe();
 
   return (
-    <Stack spacing={3}>
-      <Typography variant="h5" gutterBottom>
-        Basic Information
-      </Typography>
-
+    <PageSection title="Basic Information">
       <TextField
         label="Title"
         fullWidth
@@ -40,6 +37,6 @@ export default function RecipeStepBasic() {
         placeholder="Step-by-step brewing instructions..."
         required
       />
-    </Stack>
+    </PageSection>
   );
 }

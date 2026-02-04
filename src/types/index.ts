@@ -136,7 +136,7 @@ export enum StepAdded {
 export interface ABVInputs {
   originalGravity: number;
   finalGravity: number;
-  mashEfficiency: number; // percentage (0-100)
+  mashEfficiency: number;
 }
 
 export interface ABVResults {
