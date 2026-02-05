@@ -17,6 +17,7 @@ import {
   IBUResults,
   Hop,
   HopType,
+  totalWaterProfile,
 } from "../types";
 
 // Grain
@@ -51,14 +52,19 @@ export const defaultWaterChemistryInputs: WaterChemistryInputs = {
   lacticAcidML: 0,
 };
 
-// Water Chemistry Results
-export const defaultWaterChemistryResults: WaterChemistryResults = {
+//Total Water Profile
+export const defaultTotalWaterProfile: totalWaterProfile = {
   totalCalcium: 0,
   totalMagnesium: 0,
   totalSodium: 0,
   totalChloride: 0,
   totalSulfate: 0,
   totalBicarbonate: 0,
+}
+
+// Water Chemistry Results
+export const defaultWaterChemistryResults: WaterChemistryResults = {
+  totalWaterProfile: defaultTotalWaterProfile,
   chlorideSulfateRatio: 0,
   residualAlkalinity: 0,
   estimatedMashPH: 0,

@@ -1,50 +1,30 @@
 import { WaterChemistryResults } from "../../types";
 import ResultCard from "../ResultCard";
 import CardGrid from "../CardGrid";
+import { totalWaterProfileResultFields } from "../../constants/defaultFieldNames";
 
 interface Props {
   results: WaterChemistryResults;
 }
 
 export default function TotalWaterProfileSection({ results }: Props) {
+  const profile = results.totalWaterProfile;
+
   return (
     <CardGrid numCards={6}>
-      <ResultCard
-        label="Calcium (Ca)"
-        value={results.totalCalcium}
-        unit="ppm"
-        range="50-150"
-        highlight />
-      <ResultCard
-        label="Magnesium (Mg)"
-        value={results.totalMagnesium}
-        unit="ppm"
-        range="10-30"
-        highlight />
+      {totalWaterProfileResultFields.map((field) => (
         <ResultCard
-        label="Sodium (Na)"
-        value={results.totalSodium}
-        unit="ppm"
-        range="0-150"
-        highlight />
-      <ResultCard
-        label="Chloride (Cl)"
-        value={results.totalChloride}
-        unit="ppm"
-        range="0-250"
-        highlight />
-      <ResultCard
-        label="Sulfate (SO₄)"
-        value={results.totalSulfate}
-        unit="ppm"
-        range="50-350"
-        highlight />
-      <ResultCard
-        label="Bicarbonate (HCO₃)"
-        value={results.totalBicarbonate}
-        unit="ppm"
-        range="0-250"
-        highlight />
+          key={String(field.name)}
+          label={field.label}
+          subLabel={field.subLabel}
+          value={profile[field.name] as number}
+          unit={field.unit}
+          range={field.range}
+          highlight={field.highlight}
+          decimals={field.decimals}
+          info={field.info}
+        />
+      ))}
     </CardGrid>
   );
 }

@@ -76,20 +76,28 @@ export const waterAdjustmentsSchema = yup.object({
 });
 
 /**
- * Water Chemistry Results Schema
+ * Total Water Profile Schema
  */
-export const waterChemistryResultsSchema = yup.object({
+export const totalWaterProfileSchema = yup.object({
   totalCalcium: yup.number().required(),
   totalMagnesium: yup.number().required(),
   totalSodium: yup.number().required(),
   totalChloride: yup.number().required(),
   totalSulfate: yup.number().required(),
   totalBicarbonate: yup.number().required(),
+});
+
+/**
+ * Water Chemistry Results Schema
+ */
+export const waterChemistryResultsSchema = yup.object({
+  totalWaterProfile: totalWaterProfileSchema.required(),
   chlorideSulfateRatio: yup.number().required(),
   residualAlkalinity: yup.number().required(),
   estimatedMashPH: yup.number().required(),
   warnings: yup.array().of(yup.string().required()).default([]),
 });
+
 
 /**
  * Brew In A Bag Settings Schema

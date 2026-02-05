@@ -1,64 +1,87 @@
 import React from "react";
 import { Paper, Typography, Box } from "@mui/material";
+import {
+  paperCardStyle,
+  getPaperCardAccentSx,
+  labelStyle,
+  getLabelAccentSx,
+  subLabelStyle,
+  getSubLabelAccentSx,
+  resultValueRowStyle,
+  resultValueStyle,
+  getResultValueAccentSx,
+  resultUnitStyle,
+  getResultUnitAccentSx,
+  resultRangeStyle,
+  resultInfoStyle,
+} from "../styles/fieldStyles";
 
 interface ResultCardProps {
   label: string;
+  subLabel?: string;
   value: number;
   unit?: string;
   decimals?: number;
   range?: string;
   highlight?: boolean;
+  warning?: boolean;
   info?: string;
 }
 
 export default function ResultCard({
   label,
+  subLabel,
   value,
   unit,
   decimals = 0,
   range,
   highlight = false,
+  warning = false,
   info,
 }: ResultCardProps) {
-  const displayValue = Number.isFinite(value)
-    ? value.toFixed(decimals)
-    : "—";
+  const displayValue = Number.isFinite(value) ? value.toFixed(decimals) : "—";
+
+  // Warning overrides highlight visually
+  const isAccented = warning || highlight;
 
   return (
     <Paper
-      elevation={highlight ? 4 : 1}
+      elevation={isAccented ? 4 : paperCardStyle.elevation}
       sx={{
-        p: 2.5,
-        height: "100%",
-        position: "relative",
-        bgcolor: highlight ? "primary.lighter" : "background.paper",
-        borderLeft: highlight ? 4 : 0,
-        borderColor: "primary.main",
-        transition: "all 0.2s ease",
+        ...paperCardStyle.sx,
+        ...getPaperCardAccentSx({ highlight, warning }),
       }}
     >
-      {/* Label */}
+      {/* Label + SubLabel */}
       <Typography
-        variant="overline"
+        {...labelStyle}
         sx={{
-          fontWeight: 600,
-          letterSpacing: 0.6,
-          color: highlight ? "primary.dark" : "text.secondary",
-          mb: 0.5,
-          display: "block",
+          ...labelStyle.sx,
+          ...getLabelAccentSx({ highlight, warning }),
         }}
       >
         {label}
+
+        {subLabel && (
+          <Typography
+            {...subLabelStyle}
+            sx={{
+              ...subLabelStyle.sx,
+              ...getSubLabelAccentSx({ highlight, warning }),
+            }}
+          >
+            {subLabel}
+          </Typography>
+        )}
       </Typography>
 
       {/* Value */}
-      <Box sx={{ display: "flex", alignItems: "baseline", mb: 0.5 }}>
+      <Box {...resultValueRowStyle}>
         <Typography
-          variant="h4"
+          {...resultValueStyle}
           sx={{
-            fontWeight: 700,
-            lineHeight: 1.1,
-            color: highlight ? "primary.main" : "text.primary",
+            ...resultValueStyle.sx,
+            ...getResultValueAccentSx({ highlight, warning }),
           }}
         >
           {displayValue}
@@ -66,11 +89,10 @@ export default function ResultCard({
 
         {unit && (
           <Typography
-            variant="body2"
+            {...resultUnitStyle}
             sx={{
-              ml: 1,
-              color: highlight ? "primary.dark" : "text.secondary",
-              fontWeight: 500,
+              ...resultUnitStyle.sx,
+              ...getResultUnitAccentSx({ highlight, warning }),
             }}
           >
             {unit}
@@ -80,29 +102,13 @@ export default function ResultCard({
 
       {/* Range */}
       {range && (
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          sx={{ display: "block" }}
-        >
+        <Typography {...resultRangeStyle}>
           Target: {range}
         </Typography>
       )}
 
       {/* Info */}
-      {info && (
-        <Typography
-          variant="caption"
-          sx={{
-            display: "block",
-            mt: 1,
-            fontStyle: "italic",
-            color: "text.secondary",
-          }}
-        >
-          {info}
-        </Typography>
-      )}
+      {info && <Typography {...resultInfoStyle}>{info}</Typography>}
     </Paper>
   );
 }

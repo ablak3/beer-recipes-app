@@ -56,6 +56,14 @@ export interface BrewInABagResults {
   intoFermenter: number;
 }
 
+export enum GrainType {
+  baseMalt ="Base Malt", 
+  crystalCaramel = "Crystal/Caramel",
+  roasted = "Roasted",
+  specialty = "Specialty", 
+  adjuntct = "Adjunct",
+}
+
 export interface Grain {
   type: string;
   name: string;
@@ -99,20 +107,20 @@ export interface WaterAdjustments {
   lacticAcid: number;
 }
 
-export interface WaterChemistryResults {
+export interface totalWaterProfile {
   totalCalcium: number;
   totalMagnesium: number;
   totalSodium: number;
   totalChloride: number;
   totalSulfate: number;
   totalBicarbonate: number;
-  
-  // Ratios and pH
+}
+
+export interface WaterChemistryResults {
+  totalWaterProfile: totalWaterProfile;
   chlorideSulfateRatio: number;
   residualAlkalinity: number;
   estimatedMashPH: number;
-  
-  // Warnings
   warnings: string[];
 }
 

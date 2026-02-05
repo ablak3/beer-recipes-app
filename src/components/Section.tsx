@@ -6,7 +6,7 @@ import {
 } from "@mui/material";
 
 interface SectionProps {
-  title: string;
+  title?: string;
   children: React.ReactNode;
 }
 

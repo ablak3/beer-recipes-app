@@ -1,34 +1,24 @@
-import React from "react";
-import { Grain } from "../../types";
-import EditableGridManager from "../EditableGridManager";
-import GrainRow from "./GrainRow";
-import { defaultGrain } from "../../constants/defaultRecipeValues";
 import { useRecipe } from "../../hooks/useRecipe";
+import { defaultGrain } from "../../constants/defaultRecipeValues";
+import { grainFields } from "../../constants/defaultFieldNames";
+import ItemSection from "../ItemSection";
 
 export default function GrainBillSection() {
   const { recipe, addGrain, updateGrain, removeGrain } = useRecipe();
-  const grainBill = recipe.grainBill;
-
-  // Ensure at least one grain entry exists
-  React.useEffect(() => {
-    if (grainBill.length === 0) {
-      addGrain(defaultGrain);
-    }
-  }, [grainBill.length, addGrain]);
-
-  const renderGrainRow = (grain: Grain, index: number) => (
-    <GrainRow grain={grain} index={index} onUpdate={updateGrain} />
-  );
 
   return (
-    <EditableGridManager<Grain>
-      items={grainBill}
-      renderRow={renderGrainRow}
-      onAdd={() => addGrain(defaultGrain)}
+    <ItemSection
+      items={recipe.grainBill}
+      fields={grainFields}
+      numCards={4}
+      onAdd={addGrain}
+      onUpdate={updateGrain}
       onRemove={removeGrain}
+      defaultItem={defaultGrain}
       emptyText="No grains added yet. Click below to add grains."
       addLabel="Add Grain"
       minItems={1}
+      ensureMinimum
     />
   );
 }

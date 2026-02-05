@@ -203,19 +203,22 @@ export function useWaterChemistry(
     }
 
     setResults({
-      totalCalcium: Math.round(totalCa * 10) / 10,
-      totalMagnesium: Math.round(totalMg * 10) / 10,
-      totalSodium: Math.round(totalNa * 10) / 10,
-      totalChloride: Math.round(totalCl * 10) / 10,
-      totalSulfate: Math.round(totalSO4 * 10) / 10,
-      totalBicarbonate: Math.round(totalHCO3 * 10) / 10,
-      
+      totalWaterProfile: {
+        totalCalcium: Math.round(totalCa * 10) / 10,
+        totalMagnesium: Math.round(totalMg * 10) / 10,
+        totalSodium: Math.round(totalNa * 10) / 10,
+        totalChloride: Math.round(totalCl * 10) / 10,
+        totalSulfate: Math.round(totalSO4 * 10) / 10,
+        totalBicarbonate: Math.round(totalHCO3 * 10) / 10,
+      },
+
       chlorideSulfateRatio: Math.round(clSO4Ratio * 100) / 100,
       residualAlkalinity: Math.round(residualAlk * 10) / 10,
       estimatedMashPH: Math.round(estimatedPH * 100) / 100,
-      
+
       warnings,
-    });
+  });
+
   }, [deferredInputs, deferredAdjustments, deferredGrainBill]);
 
   return useMemo(() => results, [results]);

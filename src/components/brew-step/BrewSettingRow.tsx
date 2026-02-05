@@ -1,5 +1,4 @@
 import {
-  Grid,
   Paper,
   Typography,
   TextField,
@@ -7,6 +6,8 @@ import {
 } from "@mui/material";
 import { Unit } from "../../types";
 import { Field } from "../../constants/defaultFieldNames";
+import CardGrid from "../CardGrid";
+import { paperCardStyle, labelStyle } from "../../styles/fieldStyles";
 
 interface BrewSettingRowProps<T extends object> {
   field: Field<T>;
@@ -21,35 +22,9 @@ export default function BrewSettingRow<T extends object>({
   onChange,
   disabled,
 }: BrewSettingRowProps<T>) {
-  const paperCardStyle = {
-    elevation: 1,
-    sx: {
-      p: 2.5,
-      height: "100%",
-      bgcolor: "background.paper",
-      transition: "all 0.2s ease",
-      "&:focus-within": {
-        elevation: 4,
-        borderLeft: 4,
-        borderColor: "primary.main",
-        bgcolor: "primary.lighter",
-      },
-    },
-  };
-
-  const labelStyle = {
-    variant: "overline" as const,
-    sx: {
-      fontWeight: 600,
-      letterSpacing: 0.6,
-      color: "text.secondary",
-      mb: 0.5,
-      display: "block",
-    },
-  };
 
   return (
-    <Grid size={{ xs: 12, sm: 3 }}>
+    <CardGrid numCards={4}>
       <Paper {...paperCardStyle}>
         <Typography {...labelStyle}>{field.label}</Typography>
 
@@ -79,6 +54,6 @@ export default function BrewSettingRow<T extends object>({
           />
         )}
       </Paper>
-    </Grid>
+    </CardGrid>
   );
 }

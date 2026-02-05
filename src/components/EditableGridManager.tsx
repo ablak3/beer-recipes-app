@@ -1,12 +1,14 @@
 import React from "react";
-import {
-  Typography,
-  Grid,
-  Divider,
-  Button,
-  IconButton,
-} from "@mui/material";
+import { Typography, Grid, Divider, Button, IconButton, Box } from "@mui/material";
 import { RemoveCircle } from "@mui/icons-material";
+import {
+  editableEmptyTextStyle,
+  editableRowContainerSx,
+  editableRemoveCellSx,
+  editableDividerSx,
+  editableActionsBarSx,
+  editableAddButtonSx,
+} from "../styles/fieldStyles";
 
 interface EditableGridManagerProps<T> {
   items: T[];
@@ -30,11 +32,7 @@ export default function EditableGridManager<T>({
   return (
     <>
       {items.length === 0 && (
-        <Typography 
-          variant="body2" 
-          color="text.secondary" 
-          sx={{ py: 4, textAlign: 'center' }}
-        >
+        <Typography {...editableEmptyTextStyle}>
           {emptyText}
         </Typography>
       )}
@@ -45,32 +43,42 @@ export default function EditableGridManager<T>({
           spacing={2}
           alignItems="center"
           key={index}
-          sx={{ mb: 2 }}
+          sx={editableRowContainerSx}
         >
-          {renderRow(item, index)}
+          {/* Content grows */}
+          <Grid size={{ xs: 12, sm: "grow" }}>
+            <Grid container spacing={2} alignItems="center">
+              {renderRow(item, index)}
+            </Grid>
+          </Grid>
 
-          {/* Add / Remove Buttons */}
-          <Grid size={{ xs: 12, sm: 2 }}>
+          {/* Remove pinned to the end */}
+          <Grid size={{ xs: 12, sm: "auto" }} sx={editableRemoveCellSx}>
             <IconButton
               color="error"
               onClick={() => onRemove(index)}
               disabled={items.length <= minItems}
+              size="small"
             >
-              <RemoveCircle />
+              <RemoveCircle fontSize="small" />
             </IconButton>
           </Grid>
         </Grid>
       ))}
 
-      <Divider sx={{ my: 3 }} />
+      <Divider sx={editableDividerSx} />
 
-      <Button
-        variant="outlined"
-        color="primary"
-        onClick={onAdd}
-      >
-        {addLabel}
-      </Button>
+      <Box sx={editableActionsBarSx}>
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={onAdd}
+          size="small"
+          sx={editableAddButtonSx}
+        >
+          {addLabel}
+        </Button>
+      </Box>
     </>
   );
 }
