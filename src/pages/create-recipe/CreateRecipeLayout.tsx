@@ -29,6 +29,7 @@ const steps = [
   { label: "ABV Settings", path: "/create/abvSettings" },
   { label: "IBU Settings", path: "/create/ibuSettings" },
   { label: "Misc Ingredients", path: "/create/ingredients" },
+  { label: "Recipe Summary", path: "/create/recipeSummary" },
 ];
 
 export default function CreateRecipeLayout() {

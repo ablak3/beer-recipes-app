@@ -5,7 +5,6 @@ import { getRecipeById } from "../api/recipes";
 import { Recipe } from "../types";
 import CommentBox from "../components/CommentBox";
 import LoadingSpinner from "../components/LoadingSpinner";
-// import IngredientBox from '../components/IngredientBox';
 
 const RecipeDetail = () => {
   const { id } = useParams<{ id: string }>();

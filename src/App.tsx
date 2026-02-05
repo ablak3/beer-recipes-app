@@ -16,6 +16,7 @@ import RecipeStepWaterChemistry from "./pages/create-recipe/RecipeStepWaterChemi
 import RecipeStepGrainBill from "./pages/create-recipe/RecipeStepGrainBill";
 import RecipeStepABV from "./pages/create-recipe/RecipeStepABV";
 import RecipeStepIBU from "./pages/create-recipe/RecipeStepIBU";
+import RecipeStepSummary from "./pages/create-recipe/RecipeStepSummary";
 
 function App() {
   return (
@@ -67,6 +68,10 @@ function App() {
               <Route
                 path="/create/ingredients"
                 element={<RecipeStepIngredients />}
+              />
+              <Route
+                path="/create/recipeSummary"
+                element={<RecipeStepSummary />}
               />
             </Route>
           </Route>

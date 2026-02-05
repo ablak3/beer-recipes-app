@@ -268,3 +268,62 @@ export const getTextFieldStyleProps = (isSelect: boolean) => {
     ? { ...inputStyle, select: true, SelectProps: selectStyle }
     : { ...inputStyle };
 };
+
+// RecipeStepIBU / generic section styles
+export const infoAlertSx = { mb: 3 } as const;
+
+// Hop contribution card: reuse your existing ResultCard styles (paper + label + value/unit)
+// No new styles needed beyond paperCardStyle/labelStyle/resultValueStyle/resultUnitStyle/resultValueRowStyle
+
+// Style guide cards
+export const styleGuideCardSx = { p: 2.5, height: "100%" } as const;
+
+export const styleGuideTitleTypography = {
+  variant: "subtitle2" as const,
+  sx: { fontWeight: 600, mb: 0.5 },
+} as const;
+
+export const styleGuideBodyTypography = {
+  variant: "body2" as const,
+  color: "text.secondary" as const,
+} as const;
+
+/* =======================
+   RECIPE SUMMARY STYLES
+======================= */
+
+// Section header row (title + edit button)
+export const summaryHeaderRowSx = {
+  display: "flex",
+  alignItems: "baseline",
+  justifyContent: "space-between",
+  gap: 2,
+  mb: 1.5,
+} as const;
+
+// Edit button used in summary headers
+export const summaryEditButtonSx = {
+  minHeight: 32,
+  px: 1.5,
+  fontWeight: 600,
+} as const;
+
+// Key / Value rows (used for lists like grains, hops, ingredients)
+export const summaryListItemSx = {
+  display: "flex",
+  justifyContent: "space-between",
+  gap: 2,
+  py: 0.5,
+} as const;
+
+// Muted secondary text (counts, units, descriptions)
+export const summaryMutedTextSx = {
+  color: "text.secondary",
+} as const;
+
+// Optional chip-style rows (future use: tags, warnings, flags)
+export const summaryChipRowSx = {
+  display: "flex",
+  flexWrap: "wrap",
+  gap: 1,
+} as const;
