@@ -1,6 +1,7 @@
 import React, { createContext, useState, useCallback } from 'react';
 import { Recipe, Grain, Ingredient, WaterChemistryResults, ABVInputs, ABVResults, IBUResults, Hop } from '../types';
 import { defaultRecipeValues } from '../constants/defaultRecipeValues';
+import { setByPath } from "../utils/pathHelpers";
 
 interface RecipeContextType {
   recipe: Recipe;
@@ -21,8 +22,6 @@ interface RecipeContextType {
   addGrain: (grain: Grain) => void;
   updateGrain: (index: number, grain: Grain) => void;
   removeGrain: (index: number) => void;
-  getGrainBill: () => Grain[];
-  getGrainBillWeight: () => number;
   
   // Hops
   addHop: (hop: Hop) => void;
@@ -49,6 +48,7 @@ interface RecipeContextType {
 export const RecipeContext = createContext<RecipeContextType | undefined>(undefined);
 
 export function RecipeProvider({ children }: { children: React.ReactNode }) {
+  console.log("Provider render");
   const [recipe, setRecipe] = useState<Recipe>(defaultRecipeValues);
 
   // Basic Info
@@ -76,30 +76,11 @@ export function RecipeProvider({ children }: { children: React.ReactNode }) {
 
   // Water Chemistry Inputs - handles nested paths
   const updateWaterChemistryInput = useCallback((path: string, value: any) => {
+    console.log("updateWaterChemistryInput called", path, value);
     setRecipe(prev => {
-      const newInputs = { ...prev.waterChemistryInputs };
-      
-      // Handle nested paths like "startingWaterProfile.startingCalcium"
-      const parts = path.split('.');
-      if (parts.length === 2) {
-        const [parent, field] = parts;
-        if (parent === 'startingWaterProfile') {
-          newInputs.startingWaterProfile = {
-            ...newInputs.startingWaterProfile,
-            [field]: value
-          };
-        } else if (parent === 'waterVolumes') {
-          newInputs.waterVolumes = {
-            ...newInputs.waterVolumes,
-            [field]: value
-          };
-        }
-      } else {
-        // Direct field like "lacticAcidML"
-        (newInputs as any)[path] = value;
-      }
-      
-      return { ...prev, waterChemistryInputs: newInputs };
+      const next = setByPath(prev, path, value);
+      console.log("updated?", prev === next, path, value);
+      return next;
     });
   }, []);
 
@@ -131,17 +112,6 @@ export function RecipeProvider({ children }: { children: React.ReactNode }) {
       grainBill: prev.grainBill.filter((_, i) => i !== index)
     }));
   }, []);
-
-  const getGrainBill = useCallback(() => {
-    return recipe.grainBill;
-  }, [recipe.grainBill]);
-
-  const getGrainBillWeight = useCallback(() => {
-    return recipe.grainBill.reduce(
-      (total, grain) => total + (grain.weight || 0),
-      0
-    );
-  }, [recipe.grainBill]);
 
   // Hops
   const addHop = useCallback((hop: Hop) => {
@@ -243,8 +213,6 @@ export function RecipeProvider({ children }: { children: React.ReactNode }) {
     addGrain,
     updateGrain,
     removeGrain,
-    getGrainBill,
-    getGrainBillWeight,
     addHop,
     updateHop,
     removeHop,

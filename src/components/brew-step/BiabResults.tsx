@@ -4,7 +4,6 @@ import { useFormContext } from "react-hook-form";
 import { useBiabCalculator } from "../../hooks/useBiabCalculator";
 import { BrewInABagSettings } from "../../types";
 import ResultCard from "../ResultCard";
-import { roundTo } from "../numberUtils";
 
 interface BiabResultsProps {
   grainBillWeight: number;
@@ -48,15 +47,16 @@ export default function BiabResults({ grainBillWeight, biabValues }: BiabResults
       <Grid size={{ xs: 12, sm: 4 }}>
         <ResultCard
           label="Total Water Needed"
-          value={roundTo(results.totalWaterNeeded)}
+          value={results.totalWaterNeeded}
           unit={biabValues.liquidUnit}
+          decimals={2}
         />
       </Grid>
 
       <Grid size={{ xs: 12, sm: 4 }}>
         <ResultCard
           label="Strike Water Temperature"
-          value={roundTo(results.strikeWaterTemp)}
+          value={results.strikeWaterTemp}
           unit={biabValues.tempUnit}
         />
       </Grid>
@@ -64,32 +64,36 @@ export default function BiabResults({ grainBillWeight, biabValues }: BiabResults
       <Grid size={{ xs: 12, sm: 4 }}>
         <ResultCard
           label="Total Mash Volume"
-          value={roundTo(results.totalMashVolume)}
+          value={results.totalMashVolume}
           unit={biabValues.liquidUnit}
+          decimals={2}
         />
       </Grid>
 
       <Grid size={{ xs: 12, sm: 4 }}>
         <ResultCard
           label="Pre-Boil Wort"
-          value={roundTo(results.preBoilWort)}
+          value={results.preBoilWort}
           unit={biabValues.liquidUnit}
+          decimals={2}
         />
       </Grid>
 
       <Grid size={{ xs: 12, sm: 4 }}>
         <ResultCard
           label="Post-Boil Wort"
-          value={roundTo(results.postBoilWort)}
+          value={results.postBoilWort}
           unit={biabValues.liquidUnit}
+          decimals={2}
         />
       </Grid>
 
       <Grid size={{ xs: 12, sm: 4 }}>
         <ResultCard
           label="Into Fermenter"
-          value={roundTo(results.intoFermenter)}
+          value={results.intoFermenter}
           unit={biabValues.liquidUnit}
+          decimals={2}
         />
       </Grid>
     </>

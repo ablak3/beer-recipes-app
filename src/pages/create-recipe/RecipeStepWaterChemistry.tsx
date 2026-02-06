@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useRecipe } from "../../hooks/useRecipe";
 import { useWaterChemistry } from "../../hooks/useWaterChemistry";
 import TotalWaterProfileSection from "../../components/water-chemistry/TotalWaterProfileSection";
@@ -15,16 +15,25 @@ import {
 } from "../../constants/defaultFieldNames";
 
 export default function RecipeStepWaterChemistry() {
-  const { recipe, updateWaterChemistryResults, getGrainBill } = useRecipe();
+  const {
+    recipe,
+    updateWaterChemistryInput,
+    updateWaterAdjustments,
+    updateWaterChemistryResults,
+  } = useRecipe();
 
-  const grainBill = getGrainBill();
-  const waterChemistryInputs = recipe.waterChemistryInputs;
-  const waterAdjustments = recipe.waterAdjustments;
+  // Get grain bill directly from recipe
+  const grainBill = useMemo(() => recipe.grainBill, [recipe.grainBill]);
+
   const results = useWaterChemistry(
-    waterChemistryInputs,
-    waterAdjustments,
-    grainBill,
+    recipe.waterChemistryInputs,
+    recipe.waterAdjustments,
+    grainBill
   );
+
+  console.log("inputs", recipe.waterChemistryInputs);
+  console.log("adjustments", recipe.waterAdjustments);
+  console.log("results", results);
 
   // Update results in context whenever they change
   useEffect(() => {
@@ -36,26 +45,50 @@ export default function RecipeStepWaterChemistry() {
         <Section title="Starting Water Profile (ppm)">
           <InputCard
             fields={startingWaterChemistryNumericFields}
-            basePath="waterChemistryInputs.startingWaterProfile"
-            numCards={6} />
+            basePath="startingWaterProfile"
+            numCards={6}
+            rootValue={recipe.waterChemistryInputs}
+            onChange={(path, value) =>
+              updateWaterChemistryInput(`waterChemistryInputs.${path}`, value)
+            }
+          />
         </Section>
+
         <Section title="Water Volumes">
           <InputCard
             fields={waterVolumesFields}
-            basePath="waterChemistryInputs.waterVolumes"
-            numCards={3} />
+            basePath="waterVolumes"
+            numCards={3}
+            rootValue={recipe.waterChemistryInputs}
+            onChange={(path, value) =>
+              updateWaterChemistryInput(`waterChemistryInputs.${path}`, value)
+            }
+          />
         </Section>
         <Section title="Acid Additions (mL)">
           <InputCard
             fields={waterAdjustmentAcidFields}
-            basePath="waterAdjustments"
-            numCards={3} />
+            basePath=""
+            numCards={3}
+            rootValue={recipe.waterAdjustments}
+            onChange={(path, value) => {
+              const field = path as keyof typeof recipe.waterAdjustments;
+              updateWaterAdjustments(field, value as any);
+            }}
+          />
         </Section>
+
         <Section title="Salt Additions (grams)">
           <InputCard
             fields={waterAdjustmentSaltsFields}
-            basePath="waterAdjustments"
-            numCards={6} />
+            basePath=""
+            numCards={6}
+            rootValue={recipe.waterAdjustments}
+            onChange={(path, value) => {
+              const field = path as keyof typeof recipe.waterAdjustments;
+              updateWaterAdjustments(field, value as any);
+            }}
+          />
         </Section>
         <Section title="Total Water Profile">
           <TotalWaterProfileSection results={results} />
