@@ -1,10 +1,13 @@
 // src/components/recipe-summary/sections/SummaryWaterSection.tsx
-import { Divider, Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import { Recipe } from "../../../types";
-import CardGrid from "../../CardGrid";
-import ResultCard from "../../ResultCard";
 import SummarySectionHeader from "../SummarySectionHeader";
-import { paperCardStyle, labelStyle } from "../../../styles/fieldStyles";
+import {
+  paperCardStyle,
+  labelStyle,
+  summaryListItemSx,
+  summaryMutedTextSx,
+} from "../../../styles/fieldStyles";
 
 export default function SummaryWaterSection({
   recipe,
@@ -14,27 +17,49 @@ export default function SummaryWaterSection({
   editTo: string;
 }) {
   const water = recipe.waterChemistryResults;
+  const p = water?.totalWaterProfile;
+
+  const items = p
+    ? [
+        { label: "Calcium", sub: "Ca", value: p.totalCalcium },
+        { label: "Magnesium", sub: "Mg", value: p.totalMagnesium },
+        { label: "Sodium", sub: "Na", value: p.totalSodium },
+        { label: "Chloride", sub: "Cl", value: p.totalChloride },
+        { label: "Sulfate", sub: "SO₄", value: p.totalSulfate },
+        { label: "Bicarbonate", sub: "HCO₃", value: p.totalBicarbonate },
+      ]
+    : [];
+
+  const formatPpm = (v: any) => {
+    const num = Number(v);
+    return Number.isFinite(num) ? `${num.toFixed(1)} ppm` : "—";
+  };
 
   return (
     <>
       <SummarySectionHeader title="Water Chemistry" to={editTo} />
 
-      {water?.totalWaterProfile ? (
-        <CardGrid numCards={6}>
-          <ResultCard label="Calcium" subLabel="Ca" value={water.totalWaterProfile.totalCalcium} unit="ppm" decimals={1} />
-          <ResultCard label="Magnesium" subLabel="Mg" value={water.totalWaterProfile.totalMagnesium} unit="ppm" decimals={1} />
-          <ResultCard label="Sodium" subLabel="Na" value={water.totalWaterProfile.totalSodium} unit="ppm" decimals={1} />
-          <ResultCard label="Chloride" subLabel="Cl" value={water.totalWaterProfile.totalChloride} unit="ppm" decimals={1} />
-          <ResultCard label="Sulfate" subLabel="SO₄" value={water.totalWaterProfile.totalSulfate} unit="ppm" decimals={1} />
-          <ResultCard label="Bicarbonate" subLabel="HCO₃" value={water.totalWaterProfile.totalBicarbonate} unit="ppm" decimals={1} />
-        </CardGrid>
-      ) : (
-        <Paper {...paperCardStyle}>
+      <Paper {...paperCardStyle} sx={{ ...paperCardStyle.sx, mb: 3 }}>
+        {!p ? (
           <Typography {...labelStyle}>No water chemistry results yet.</Typography>
-        </Paper>
-      )}
-
-      <Divider sx={{ my: 3 }} />
+        ) : (
+          items.map((item) => (
+            <Box key={item.label} sx={summaryListItemSx}>
+              <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                {item.label}
+                {item.sub ? (
+                  <Typography component="span" sx={{ ...summaryMutedTextSx, ml: 1 }}>
+                    {item.sub}
+                  </Typography>
+                ) : null}
+              </Typography>
+              <Typography variant="body2" sx={summaryMutedTextSx}>
+                {formatPpm(item.value)}
+              </Typography>
+            </Box>
+          ))
+        )}
+      </Paper>
     </>
   );
 }
