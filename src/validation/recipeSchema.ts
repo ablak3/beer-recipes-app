@@ -13,6 +13,7 @@ export const grainSchema = yup.object({
   type: yup.string().required("Grain type is required"),
   name: yup.string().required("Grain name is required"),
   weight: yup.number().required("Weight is required"),
+  unit: yup.mixed<Unit>().oneOf(Object.values(Unit)).required(),
   lovibond: yup.number().required("Lovibond is required"),
 });
 
@@ -104,7 +105,6 @@ export const waterChemistryResultsSchema = yup.object({
  */
 export const brewInABagSettingsSchema = yup.object({
   id: yup.string().nullable(),
-  grainBillUnit: yup.mixed<Unit>().oneOf(Object.values(Unit)).required(),
   tempUnit: yup.mixed<Unit>().oneOf(Object.values(Unit)).required(),
   timeUnit: yup.mixed<Unit>().oneOf(Object.values(Unit)).required(),
   liquidUnit: yup.mixed<Unit>().oneOf(Object.values(Unit)).required(),

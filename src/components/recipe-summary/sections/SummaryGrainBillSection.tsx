@@ -7,16 +7,17 @@ import { paperCardStyle, labelStyle, summaryListItemSx, summaryMutedTextSx } fro
 export default function SummaryGrainBillSection({
   recipe,
   editTo,
+  editable = true,
 }: {
   recipe: Recipe;
   editTo: string;
+  editable?: boolean;
 }) {
   const grains = recipe.grainBill ?? [];
-  const unit = recipe.brewInABagSettings?.grainBillUnit;
 
   return (
     <>
-      <SummarySectionHeader title="Grain Bill" to={editTo} />
+      <SummarySectionHeader title="Grain Bill" to={editTo} editable={editable} />
       <Paper {...paperCardStyle} sx={{ ...paperCardStyle.sx, mb: 3 }}>
         {grains.length === 0 ? (
           <Typography {...labelStyle}>No grains added.</Typography>
@@ -27,7 +28,7 @@ export default function SummaryGrainBillSection({
                 {g.name}
               </Typography>
               <Typography variant="body2" sx={summaryMutedTextSx}>
-                {g.weight} {unit}
+                {g.weight} {g.unit}
               </Typography>
             </Box>
           ))

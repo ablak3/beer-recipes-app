@@ -12,9 +12,11 @@ import {
 export default function SummaryBiabSection({
   recipe,
   editTo,
+  editable = true,
 }: {
   recipe: Recipe;
   editTo: string;
+  editable: boolean;
 }) {
   const biab = recipe.brewInABagSettings;
 
@@ -34,7 +36,7 @@ export default function SummaryBiabSection({
 
   return (
     <>
-      <SummarySectionHeader title="Brew-In-A-Bag" to={editTo} />
+      <SummarySectionHeader title="Brew-In-A-Bag" to={editTo} editable={editable} />
 
       <Paper {...paperCardStyle} sx={{ ...paperCardStyle.sx, mb: 3 }}>
         {items.every((i) => !Number.isFinite(Number(i.value))) ? (

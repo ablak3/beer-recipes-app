@@ -10,7 +10,7 @@ export default function GrainBillSection() {
     <ItemSection
       items={recipe.grainBill}
       fields={grainFields}
-      numCards={4}
+      numCards={5}
       onAdd={addGrain}
       onUpdate={updateGrain}
       onRemove={removeGrain}

@@ -25,6 +25,7 @@ export const defaultGrain: Grain = {
   type: "Base Malt",
   name: "",
   weight: 0,
+  unit: Unit.Pounds,
   lovibond: 0
 };
 
@@ -99,7 +100,6 @@ export const defaultIngredient: Ingredient = {
 // Brew In A Bag Settings
 export const defaultBrewInABagSettings: BrewInABagSettings = {
   id: null,
-  grainBillUnit: Unit.Pounds,
   tempUnit: Unit.Fahrenheit,
   timeUnit: Unit.Minutes,
   liquidUnit: Unit.Gallons,

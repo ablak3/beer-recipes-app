@@ -8,9 +8,11 @@ import SummaryRowKV from "../SummaryRowKV";
 export default function SummaryBasicSection({
   recipe,
   editTo,
+  editable = true,
 }: {
   recipe: Recipe;
   editTo: string;
+  editable: boolean;
 }) {
   const grainCount = recipe.grainBill?.length ?? 0;
   const hopCount = recipe.hops?.length ?? 0;
@@ -18,7 +20,7 @@ export default function SummaryBasicSection({
 
   return (
     <>
-      <SummarySectionHeader title="Basic" to={editTo} />
+      <SummarySectionHeader title="Basic" to={editTo} editable={editable} />
       <Paper {...paperCardStyle} sx={{ ...paperCardStyle.sx, mb: 3 }}>
         <Typography variant="h5" sx={{ mb: 0.5 }}>
           {recipe.title || "Untitled Recipe"}

@@ -7,15 +7,17 @@ import { paperCardStyle, labelStyle, summaryListItemSx, summaryMutedTextSx } fro
 export default function SummaryIngredientsSection({
   recipe,
   editTo,
+  editable = true,
 }: {
   recipe: Recipe;
   editTo: string;
+  editable: boolean;
 }) {
   const ingredients = recipe.ingredients ?? [];
 
   return (
     <>
-      <SummarySectionHeader title="Ingredients" to={editTo} />
+      <SummarySectionHeader title="Ingredients" to={editTo} editable={editable} />
       <Paper {...paperCardStyle} sx={{ ...paperCardStyle.sx, mb: 3 }}>
         {ingredients.length === 0 ? (
           <Typography {...labelStyle}>No ingredients added.</Typography>

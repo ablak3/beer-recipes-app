@@ -12,9 +12,11 @@ import {
 export default function SummaryWaterSection({
   recipe,
   editTo,
+  editable = true,
 }: {
   recipe: Recipe;
   editTo: string;
+  editable: boolean;
 }) {
   const water = recipe.waterChemistryResults;
   const p = water?.totalWaterProfile;
@@ -37,7 +39,7 @@ export default function SummaryWaterSection({
 
   return (
     <>
-      <SummarySectionHeader title="Water Chemistry" to={editTo} />
+      <SummarySectionHeader title="Water Chemistry" to={editTo} editable={editable} />
 
       <Paper {...paperCardStyle} sx={{ ...paperCardStyle.sx, mb: 3 }}>
         {!p ? (

@@ -7,15 +7,17 @@ import { paperCardStyle, labelStyle, summaryListItemSx, summaryMutedTextSx } fro
 export default function SummaryHopScheduleSection({
   recipe,
   editTo,
+  editable = true,
 }: {
   recipe: Recipe;
   editTo: string;
+  editable: boolean;
 }) {
   const hops = recipe.hops ?? [];
 
   return (
     <>
-      <SummarySectionHeader title="Hop Schedule" to={editTo} />
+      <SummarySectionHeader title="Hop Schedule" to={editTo} editable={editable} />
       <Paper {...paperCardStyle} sx={{ ...paperCardStyle.sx, mb: 3 }}>
         {hops.length === 0 ? (
           <Typography {...labelStyle}>No hops added.</Typography>

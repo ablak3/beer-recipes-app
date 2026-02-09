@@ -23,7 +23,6 @@ export type Field<T> = {
 export const brewInABagFields: Field<
   RecipeFormValues["brewInABagSettings"]
 >[] = [
-  { name: "grainBillUnit", label: "Grain Bill Unit", type: "unit" },
   { name: "tempUnit", label: "Temperature Unit", type: "unit" },
   { name: "timeUnit", label: "Time Unit", type: "unit" },
   { name: "liquidUnit", label: "Liquid Unit", type: "unit" },
@@ -108,6 +107,7 @@ export const grainFields: Field<RecipeFormValues["grainBill"][0]>[] = [
   { name: "type", label: "Type", type: "select", options: Object.values(GrainType) },
   { name: "name", label: "Name", type: "text", placeholder: "Grain name" },
   { name: "weight", label: "Weight (lbs)", type: "number", placeholder: "0" },
+  { name: "unit", label: "Unit", type: "select", options: Object.values(Unit) },
   { name: "lovibond", label: "Lovibond", type: "number", placeholder: "0" },
 ];
 

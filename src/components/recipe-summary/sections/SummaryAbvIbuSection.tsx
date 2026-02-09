@@ -13,10 +13,12 @@ export default function SummaryAbvIbuSection({
   recipe,
   editToAbv,
   editToIbu,
+  editable = true,
 }: {
   recipe: Recipe;
   editToAbv: string;
   editToIbu: string;
+  editable: boolean;
 }) {
   const abvInputs = recipe.abvInputs;
   const abvResults = recipe.abvResults;
@@ -38,7 +40,7 @@ export default function SummaryAbvIbuSection({
 
   return (
     <>
-      <SummarySectionHeader title="ABV / IBU" to={editToAbv} />
+      <SummarySectionHeader title="ABV / IBU" to={editToAbv} editable={editable} />
 
       <Paper {...paperCardStyle} sx={{ ...paperCardStyle.sx, mb: 3 }}>
         {items.every((i) => !Number.isFinite(Number(i.value))) ? (

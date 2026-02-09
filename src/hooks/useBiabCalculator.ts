@@ -5,7 +5,6 @@ type UseBiabCalculatorProps = {
   grainBillWeight: number;
   tempUnit: Unit;
   liquidUnit: Unit;
-  grainBillUnit: Unit;
   timeUnit: Unit;
   batchSize: number;
   mashTemp: number;
@@ -30,7 +29,6 @@ export function useBiabCalculator({
   grainBillWeight,
   tempUnit,
   liquidUnit,
-  grainBillUnit,
   timeUnit,
   batchSize,
   mashTemp,
@@ -92,21 +90,10 @@ export function useBiabCalculator({
     // w = batch size + trub + boil off + grain absorption
     const w = b + t + boilOffVolume + grainAbsorption;
 
-    // Calculate grain volume
+    // assumes grain volume is in pounds
     // 0.08 gal/lb for US, 0.65 L/kg for metric
     // This is the PHYSICAL volume the grain occupies, not absorption
-    let grainVolume;
-    if (liquidUnit === Unit.Gallons && grainBillUnit === Unit.Pounds) {
-      grainVolume = l * 0.08; // gal
-    } else if (liquidUnit === Unit.Liters && grainBillUnit === Unit.Kilograms) {
-      grainVolume = l * 0.65; // L
-    } else if (liquidUnit === Unit.Gallons && grainBillUnit === Unit.Kilograms) {
-      // Convert kg to lbs, then multiply by 0.08 gal/lb
-      grainVolume = (l * 2.20462) * 0.08;
-    } else {
-      // Liters and Pounds: convert lbs to kg, then multiply by 0.65 L/kg
-      grainVolume = (l / 2.20462) * 0.65;
-    }
+    const grainVolume = l * 0.08;;
 
     // Calculate Total Mash Volume
     const v = w + grainVolume;
@@ -121,21 +108,15 @@ export function useBiabCalculator({
     const p = w - grainAbsorption;
 
     // Calculate Strike Water Temperature
+    // Assumes grain bill weight is in pounds
     // The correct formula from biabcalculator.com:
     // Tw = (0.2 / R) * (Tmash - Tgrain) + Tmash
     // where R = water to grain ratio in QUARTS per pound
     // So we need to convert gallons to quarts: multiply by 4
     // For metric: Tw = (0.41 / R) * (Tmash - Tgrain) + Tmash where R is L/kg
     const waterToGrainRatio = w / l;
-    let s;
-    if (liquidUnit === Unit.Gallons && grainBillUnit === Unit.Pounds) {
-      // US: convert gal/lb to qt/lb by multiplying by 4
-      const ratioInQuarts = waterToGrainRatio * 4;
-      s = (0.2 / ratioInQuarts) * (j - i) + j;
-    } else {
-      // Metric: L/kg ratio used directly
-      s = (0.41 / waterToGrainRatio) * (j - i) + j;
-    }
+    const ratioInQuarts = waterToGrainRatio * 4;
+    const s = (0.2 / ratioInQuarts) * (j - i) + j;;
 
     // Calculate PostBoil Wort
     const q = b + t;
@@ -153,7 +134,7 @@ export function useBiabCalculator({
       kettleSizeExceeded,
       kettleSizeWarning,
     });
-  }, [deferredInputs, liquidUnit, tempUnit, grainBillUnit, timeUnit]);
+  }, [deferredInputs, liquidUnit, tempUnit, timeUnit]);
 
   // ✅ Memoize results so reference stays stable
   return useMemo(() => results, [results]);

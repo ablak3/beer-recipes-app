@@ -29,11 +29,12 @@ export enum Unit {
   Liters = "Liters",
   Milliliters = "Milliliters",
   PartsPerMillion = "PartsPerMillion",
+  Ounces = "Ounces",
+  Grams = "Grams",
 }
 
 export interface BrewInABagSettings {
   id: string | null;
-  grainBillUnit: Unit;
   tempUnit: Unit;
   timeUnit: Unit;
   liquidUnit: Unit;
@@ -68,6 +69,7 @@ export interface Grain {
   type: string;
   name: string;
   weight: number;
+  unit: Unit;
   lovibond: number;
 }
 

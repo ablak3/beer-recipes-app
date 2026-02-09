@@ -7,13 +7,15 @@ import { paperCardStyle, labelStyle, summaryMutedTextSx } from "../../../styles/
 export default function SummaryInstructionsSection({
   recipe,
   editTo,
+  editable = true,
 }: {
   recipe: Recipe;
   editTo: string;
+  editable: boolean;
 }) {
   return (
     <>
-      <SummarySectionHeader title="Instructions" to={editTo} />
+      <SummarySectionHeader title="Instructions" to={editTo} editable={editable} />
       <Paper {...paperCardStyle}>
         <Typography {...labelStyle}>Steps</Typography>
         <Typography variant="body2" sx={summaryMutedTextSx} style={{ whiteSpace: "pre-wrap" }}>
