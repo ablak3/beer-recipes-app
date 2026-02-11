@@ -3,9 +3,12 @@ import { useRecipe } from "../../hooks/useRecipe";
 import PageSection from "../../components/PageSection";
 import CardGrid from "../../components/CardGrid";
 import { paperCardStyle } from "../../styles/fieldStyles";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function RecipeStepBasic() {
   const { recipe, updateBasicInfo } = useRecipe();
+  const { user } = useAuth();
+
 
   return (
     <PageSection title="Basic Information">
@@ -15,7 +18,10 @@ export default function RecipeStepBasic() {
             label="Title"
             fullWidth
             value={recipe.title}
-            onChange={(e) => updateBasicInfo('title', e.target.value)}
+            onChange={(e) => {
+              updateBasicInfo('title', e.target.value);
+              updateBasicInfo('author', user ? user : "anon");
+            }}
             placeholder="e.g., Summer Pale Ale"
             required />
         </Paper>

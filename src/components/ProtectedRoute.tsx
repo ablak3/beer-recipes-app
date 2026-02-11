@@ -8,6 +8,7 @@ const ProtectedRoute = () => {
 
   // Redirect to login, remembering where the user was trying to go
   // ✅ When authenticated, render nested routes via Outlet
+  console.log("user: " + user);
   return user ? (
     <Outlet />
   ) : (

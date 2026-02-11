@@ -23,7 +23,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   if (token && token.split('.').length === 3) {
     try {
       const decoded = jwtDecode<JwtPayload>(token);
-      setUser(decoded.username);
+      setUser(decoded.sub);
     } catch (err) {
       console.error('Failed to decode JWT:', err);
     }
@@ -35,7 +35,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = (token: string) => {
     localStorage.setItem('token', token);
     const decoded = jwtDecode<JwtPayload>(token);
-    setUser(decoded.username);
+    console.log("decoded username: " + decoded.sub);
+    setUser(decoded.sub);
   };
 
   const logout = () => {

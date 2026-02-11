@@ -16,7 +16,6 @@ export default function BrewSettingsSection<T extends object>({
   return (
     <>
       {fields
-        .filter((field) => field.name !== "id")
         .map((field) => (
           <BrewSettingRow
             key={String(field.name)}

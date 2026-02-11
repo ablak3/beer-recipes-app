@@ -16,7 +16,7 @@ export const CommentBox: React.FC<CommentBoxProps> = ({ recipe }) => {
 
   const handleSubmit = () => {
     if (!recipe.id || !user) return;
-    addComment(recipe.id, { id: null, user, content: comment })
+    addComment(recipe.id, { user, content: comment })
       .then(() => setComment(""))
       .then(() => navigate(`/recipes/${recipe.id}`));
   };

@@ -34,7 +34,6 @@ export enum Unit {
 }
 
 export interface BrewInABagSettings {
-  id: string | null;
   tempUnit: Unit;
   timeUnit: Unit;
   liquidUnit: Unit;
@@ -97,7 +96,6 @@ export interface WaterChemistryInputs {
 }
 
 export interface WaterAdjustments {
-  id: string | null;
   solidUnit: Unit;
   liquidUnit: Unit;
   gypsum: number;
@@ -163,7 +161,6 @@ export enum HopType {
 }
 
 export interface Hop {
-  id: string | null;
   name: string;
   alphaAcid: number; // percentage
   amount: number; // ounces
@@ -181,7 +178,6 @@ export interface IBUResults {
 }
 
 export interface Ingredient {
-  id: string | null;
   type: IngredientType;
   name: string;
   amount: number;
@@ -191,16 +187,16 @@ export interface Ingredient {
 }
 
 export interface Comment {
-  id: string | null;
   user: string;
   content: string;
 }
 
 export interface JwtPayload {
-  username: string;
   exp: number;
   iat?: number;
+  iss?: string;
   roles?: string[];
+  sub: string;
 }
 
 export interface Credentials {

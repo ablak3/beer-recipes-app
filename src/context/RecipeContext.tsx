@@ -47,9 +47,14 @@ interface RecipeContextType {
 
 export const RecipeContext = createContext<RecipeContextType | undefined>(undefined);
 
-export function RecipeProvider({ children }: { children: React.ReactNode }) {
-  console.log("Provider render");
-  const [recipe, setRecipe] = useState<Recipe>(defaultRecipeValues);
+export function RecipeProvider({
+  children,
+  initialRecipe,
+}: {
+  children: React.ReactNode;
+  initialRecipe?: Recipe;
+}) {
+  const [recipe, setRecipe] = useState<Recipe>(initialRecipe ?? defaultRecipeValues);
 
   // Basic Info
   const updateBasicInfo = useCallback((field: 'title' | 'description' | 'instructions' | 'author', value: string) => {

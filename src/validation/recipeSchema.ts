@@ -21,7 +21,6 @@ export const grainSchema = yup.object({
  * Hop Schema
  */
 export const hopSchema = yup.object({
-  id: yup.string().nullable(),
   name: yup.string().required("Hop name is required"),
   alphaAcid: yup.number().min(0).max(25).required("Alpha acid is required"),
   amount: yup.number().min(0).required("Amount is required"),
@@ -64,7 +63,6 @@ export const waterChemistryInputsSchema = yup.object({
  * Water Adjustments Schema
  */
 export const waterAdjustmentsSchema = yup.object({
-  id: yup.string().nullable(),
   solidUnit: yup.mixed<Unit>().oneOf(Object.values(Unit)).required(),
   liquidUnit: yup.mixed<Unit>().oneOf(Object.values(Unit)).required(),
   gypsum: yup.number().required("Gypsum is required"),
@@ -104,7 +102,6 @@ export const waterChemistryResultsSchema = yup.object({
  * Brew In A Bag Settings Schema
  */
 export const brewInABagSettingsSchema = yup.object({
-  id: yup.string().nullable(),
   tempUnit: yup.mixed<Unit>().oneOf(Object.values(Unit)).required(),
   timeUnit: yup.mixed<Unit>().oneOf(Object.values(Unit)).required(),
   liquidUnit: yup.mixed<Unit>().oneOf(Object.values(Unit)).required(),
@@ -134,7 +131,6 @@ export const brewInABagResultsSchema = yup.object({
  * Ingredient Schema
  */
 export const ingredientSchema = yup.object({
-  id: yup.string().nullable(),
   type: yup.mixed<IngredientType>().oneOf(Object.values(IngredientType)).required(),
   name: yup.string().required("Ingredient name is required"),
   amount: yup.number().required("Amount is required"),
@@ -147,7 +143,6 @@ export const ingredientSchema = yup.object({
  * Comment Schema
  */
 export const commentSchema = yup.object({
-  id: yup.string().nullable(),
   user: yup.string().required("User is required"),
   content: yup.string().required("Content is required"),
 });

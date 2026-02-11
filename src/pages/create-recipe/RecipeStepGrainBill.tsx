@@ -1,4 +1,4 @@
-import GrainBillSection from "../../components/grains/GrainBillSection";
+import GrainBillSection from "../../components/water-chemistry/GrainBillSection";
 import PageSection from "../../components/PageSection";
 import Section from "../../components/Section";
 

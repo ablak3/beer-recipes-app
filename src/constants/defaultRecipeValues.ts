@@ -74,7 +74,6 @@ export const defaultWaterChemistryResults: WaterChemistryResults = {
 
 // Water Adjustments
 export const defaultWaterAdjustments: WaterAdjustments = {
-  id: null,
   solidUnit: Unit.PartsPerMillion,
   liquidUnit: Unit.Milliliters,
   gypsum: 0,
@@ -88,7 +87,6 @@ export const defaultWaterAdjustments: WaterAdjustments = {
 
 // Ingredient
 export const defaultIngredient: Ingredient = {
-  id: null,
   type: IngredientType.Other,
   name: "",
   amount: 0,
@@ -99,7 +97,6 @@ export const defaultIngredient: Ingredient = {
 
 // Brew In A Bag Settings
 export const defaultBrewInABagSettings: BrewInABagSettings = {
-  id: null,
   tempUnit: Unit.Fahrenheit,
   timeUnit: Unit.Minutes,
   liquidUnit: Unit.Gallons,
@@ -125,7 +122,6 @@ export const defaultBrewInABagResults: BrewInABagResults = {
 
 // Hop
 export const defaultHop: Hop = {
-  id: null,
   name: "",
   alphaAcid: 0,
   amount: 0,
