@@ -1,6 +1,5 @@
 import Section from "../../components/Section";
 import BrewSettingsSection from "../../components/brew-step/BrewSettingsSection";
-import BrewResultsSection from "../../components/brew-step/BrewResultsSection";
 import { brewInABagFields } from "../../constants/defaultFieldNames";
 import PageSection from "../../components/PageSection";
 import { useMemo } from 'react';
@@ -8,6 +7,7 @@ import { useRecipe } from "../../hooks/useRecipe";
 import { toPounds } from '../../utils/unitConverters';
 import { Unit } from '../../types';
 import { Alert } from "@mui/material";
+import BiabResults from "../../components/brew-step/BiabResults";
 
 export default function RecipeStepBrew() {
   const { recipe } = useRecipe();
@@ -34,7 +34,7 @@ export default function RecipeStepBrew() {
         <BrewSettingsSection fields={brewInABagFields} />
       </Section>
       <Section title="BIAB Calculations">
-        <BrewResultsSection grainBillWeight={grainBillWeight}/>
+        <BiabResults grainBillWeight={grainBillWeight}/>
       </Section>
     </PageSection>
   );

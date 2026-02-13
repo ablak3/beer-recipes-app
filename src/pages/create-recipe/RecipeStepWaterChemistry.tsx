@@ -31,10 +31,6 @@ export default function RecipeStepWaterChemistry() {
     grainBill
   );
 
-  console.log("inputs", recipe.waterChemistryInputs);
-  console.log("adjustments", recipe.waterAdjustments);
-  console.log("results", results);
-
   // Update results in context whenever they change
   useEffect(() => {
     updateWaterChemistryResults(results);

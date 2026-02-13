@@ -203,3 +203,13 @@ export interface Credentials {
     username: string;
     password: string;
 }
+
+export interface Page<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number; // current page index
+  first: boolean;
+  last: boolean;
+}
